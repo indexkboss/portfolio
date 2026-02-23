@@ -127,18 +127,6 @@ const Projects = () => {
 
   return (
     <div className="projects-page">
-
-
- {/* NAVBAR */}
-      {/* <nav className="navbar">
-        <div className="logo">Home</div>
-        <div className="nav-links">
-          <a href="/">Home</a>
-          <a href="projects">Projects</a>
-          <a href="contact">Contact</a>          
-        </div>
-      </nav> */}
-
          <nav className="navbar">
       <div className="logo" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold', fontSize: '24px', color: '#fff' }}>
         Hi there!
@@ -170,9 +158,9 @@ const Projects = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          My Projects
+          My Projects  comming soon
         </motion.h1>
-        <motion.p
+        {/* <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -181,7 +169,7 @@ const Projects = () => {
         </motion.p>
       </div>
 
-      {/* Filters */}
+      {/* Filters 
       <div className="projects-filters">
         {categories.map((cat) => (
           <button
@@ -195,7 +183,7 @@ const Projects = () => {
         ))}
       </div>
 
-      {/* Projects Grid */}
+      {/* Projects Grid 
       <div className="projects-grid">
         {filteredProjects.map((project, i) => (
           <motion.div
@@ -228,8 +216,8 @@ const Projects = () => {
               </div>
             </div>
           </motion.div>
-        ))}
-      </div>
+        ))}*/}
+      </div> 
     </div>
   );
 };
