@@ -1,0 +1,420 @@
+/* Contact Page New */
+.contact-page-new {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #141726, #0b0d10 70%);
+  color: var(--text-main);
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Light Mode */
+body.light-mode .contact-page-new {
+  background: #f8fafc !important;
+}
+
+/* Header Section */
+.contact-header-new {
+  text-align: center;
+  padding: 100px 5vw 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-header-new h1 {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+  background: linear-gradient(135deg, #fff, #bdbdfd, #ff006e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-header-new p {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+/* Split Card Container - Centered */
+.split-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 0 5vw 3rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.split-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 800px; /* Smaller max width */
+  margin: 0 auto;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Left Side */
+.split-card-left {
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 0, 110, 0.05), rgba(131, 56, 236, 0.05));
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.split-card-left h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  background: linear-gradient(135deg, #ff006e, #8338ec);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.split-card-left p {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+/* Icons Grid */
+.icons-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.icon-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 0, 110, 0.3);
+}
+
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 0.4rem;
+}
+
+.icon-circle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+/* Right Side */
+.split-card-right {
+  padding: 2rem;
+}
+
+.split-card-right h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  background: linear-gradient(135deg, #fff, #bdbdfd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.split-card-right p {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+}
+
+/* Split Form */
+.split-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.split-form-group {
+  position: relative;
+}
+
+.split-form-group input,
+.split-form-group textarea {
+  width: 100%;
+  padding: 0.6rem 0;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border);
+  color: var(--text-main);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.split-form-group textarea {
+  resize: none;
+}
+
+.split-form-group label {
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.split-form-group input:focus,
+.split-form-group textarea:focus,
+.split-form-group input:not(:placeholder-shown),
+.split-form-group textarea:not(:placeholder-shown) {
+  border-bottom-color: #ff006e;
+}
+
+.split-form-group input:focus ~ label,
+.split-form-group textarea:focus ~ label,
+.split-form-group input:not(:placeholder-shown) ~ label,
+.split-form-group textarea:not(:placeholder-shown) ~ label {
+  transform: translateY(-1.2rem);
+  font-size: 0.7rem;
+  color: #ff006e;
+}
+
+.split-form-group input::placeholder,
+.split-form-group textarea::placeholder {
+  color: transparent;
+}
+
+/* Submit Button */
+.split-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, #ff006e, #8338ec);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.split-submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.split-submit-btn:hover::before {
+  left: 100%;
+}
+
+.split-submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 0, 110, 0.4);
+}
+
+.split-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Messages */
+.success-message-split,
+.error-message-split {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.success-message-split {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid #10b981;
+  color: #10b981;
+}
+
+.error-message-split {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+}
+
+.sending {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sending::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Footer */
+.contact-footer-new {
+  padding: 1.5rem 5vw;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Light Mode */
+body.light-mode .contact-header-new h1 {
+  background: linear-gradient(135deg, #1e293b, #0ea5e9, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .split-card {
+  background: white;
+  border-color: rgba(0, 0, 0, 0.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .split-card-left {
+  background: #f8fafc;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .icon-item {
+  background: white;
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .icon-item:hover {
+  border-color: #0ea5e9;
+}
+
+body.light-mode .icon-label {
+  color: #1e293b;
+}
+
+body.light-mode .split-card-right h3 {
+  background: linear-gradient(135deg, #1e293b, #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .split-form-group input,
+body.light-mode .split-form-group textarea {
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  color: #1e293b;
+}
+
+body.light-mode .split-form-group input:focus,
+body.light-mode .split-form-group textarea:focus,
+body.light-mode .split-form-group input:not(:placeholder-shown),
+body.light-mode .split-form-group textarea:not(:placeholder-shown) {
+  border-bottom-color: #0ea5e9;
+}
+
+body.light-mode .split-form-group input:focus ~ label,
+body.light-mode .split-form-group textarea:focus ~ label,
+body.light-mode .split-form-group input:not(:placeholder-shown) ~ label,
+body.light-mode .split-form-group textarea:not(:placeholder-shown) ~ label {
+  color: #0ea5e9;
+}
+
+body.light-mode .split-submit-btn {
+  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-header-new {
+    padding: 80px 5vw 15px;
+  }
+  
+  .contact-header-new h1 {
+    font-size: 2rem;
+  }
+  
+  .split-card {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+  }
+  
+  .split-card-left {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .icons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .split-card {
+    max-width: 100%;
+  }
+  
+  .split-card-left,
+  .split-card-right {
+    padding: 1.5rem;
+  }
+  
+  .split-card-left h3,
+  .split-card-right h3 {
+    font-size: 1.3rem;
+  }
+  
+  .icons-grid {
+    gap: 0.5rem;
+  }
+  
+  .icon-circle {
+    width: 36px;
+    height: 36px;
+  }
+}
