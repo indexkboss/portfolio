@@ -17,13 +17,6 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  // EmailJS configuration
-  const EMAILJS_CONFIG = {
-    serviceId: 'service_sffekrp',
-    templateId: 'template_8262izt',
-    publicKey: 'VOgBn6bBYaA9J9IHU'
-  };
-
   // Toggle dark/light mode
   useEffect(() => {
     document.body.classList.toggle('light-mode', !isDarkMode);
@@ -40,13 +33,12 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
-    
     try {
       const result = await emailjs.sendForm(
-        EMAILJS_CONFIG.serviceId,
-        EMAILJS_CONFIG.templateId,
+        import.meta.env.VITE_serviceId,
+        import.meta.env.VITE_templateId,
         formRef.current,
-        EMAILJS_CONFIG.publicKey
+        import.meta.env.VITE_publicKey
       );
       
       console.log('Email sent successfully:', result);
@@ -111,7 +103,7 @@ const Contact = () => {
       whileHover={{ y: -3, scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      <div className="icon-circle" style={{ backgroundColor: item.color }}>
+      <div className="icon-circle" data-type={item.label.toLowerCase()}>
         {item.icon}
       </div>
       <span className="icon-label">{item.label}</span>
@@ -123,9 +115,8 @@ const Contact = () => {
       className="icon-item"
       whileHover={{ y: -3, scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      style={{ background: 'none', border: 'none', cursor: 'pointer' }}
     >
-      <div className="icon-circle" style={{ backgroundColor: item.color }}>
+      <div className="icon-circle" data-type={item.label.toLowerCase()}>
         {item.icon}
       </div>
       <span className="icon-label">{item.label}</span>

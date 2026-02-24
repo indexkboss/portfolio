@@ -13,10 +13,11 @@ import { experiencesData } from "../data/experiencesData";
 import { educationData } from "../data/educationData";
 import { websiteDemosData } from "../data/websiteDemosData";
 import { allCertificatesData } from "../data/allCertificatesData";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [text] = useTypewriter({
-    words: ['AI and Big Data Engineer', 'Creative Thinker', 'Problem Solver', 'Innovator', 'Lifelong Learner', 'Tech Enthusiast', 'Team Player', 'Passionate Coder', 'Continuous Improver', 'Future-Ready'],
+    words: ['a Creative Thinker', 'a Problem Solver', 'an Innovator', 'a Lifelong Learner', 'a Tech Enthusiast', 'a Team Player', 'a Passionate Coder', 'a Continuous Improver'],
     loop: true,
     delaySpeed: 2000,
   });
@@ -127,15 +128,17 @@ const Home = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            I'm a <span className="typewriter">{text}</span>
+            AI & Big Data Engineering, I'm <span className="typewriter">{text}</span>
           </motion.p>
           <div className="button-group">
-            <button className="contact-btn" onClick={() => window.location.href = 'mailto:khadija.bossony@gmail.com'}>
-              Contact Me
-            </button>
-            <button className="download-cv-btn" onClick={() => window.location.href = 'mailto:khadija.bossony@gmail.com'}>
-              Download CV
-            </button>
+          <Link to="/Contact" className="link-contact">
+            <button className="contact-btn">Contact Me</button>
+          </Link>
+<a href="/CVPortfolio.pdf" download  className="a-downloadBtn">
+  <button className="download-cv-btn">
+    Download CV
+  </button>
+</a>
           </div>
         </div>
 
