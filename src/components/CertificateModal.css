@@ -332,3 +332,49 @@
     min-width: 50px;
   }
 }
+
+
+/* CertificateModal.css */
+
+/* ... existing styles ... */
+
+/* Skills section in modal */
+.cert-modal-body .cert-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0;
+  padding: 0 20px;
+}
+
+/* Skill tags in modal - make them visible on white background */
+.cert-modal-body .skill-tag {
+  background-color: #f0f0f0;  /* Light gray background */
+  color: #333333;              /* Dark text for contrast */
+  border: 1px solid #e0e0e0;   /* Subtle border */
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Optional: Add hover effect */
+.cert-modal-body .skill-tag:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+/* If you want a different style (outline instead of filled) */
+.cert-modal-body .skill-tag.outline-style {
+  background-color: transparent;
+  border: 1px solid #666666;
+  color: #666666;
+}
+
+/* If you want a colored style matching your theme */
+.cert-modal-body .skill-tag.theme-style {
+  background-color: #0047AB;  /* Your theme color */
+  color: white;
+  border: none;
+}

@@ -7,7 +7,6 @@ import './Contact.css';
 import Navbar from '../components/Navbar';
 
 const Contact = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const formRef = useRef();
   const [formData, setFormData] = useState({
     name: '',
@@ -18,9 +17,7 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
 
   // Toggle dark/light mode
-  useEffect(() => {
-    document.body.classList.toggle('light-mode', !isDarkMode);
-  }, [isDarkMode]);
+
 
   const handleChange = (e) => {
     setFormData({
@@ -198,7 +195,7 @@ const Contact = () => {
                   animate={{ opacity: 1, y: 0 }}
                 >
                   <MessageCircle size={18} />
-                  <span>Message sent successfully!</span>
+                  <span className='span-message-succ'>Message sent successfully!</span>
                 </motion.div>
               )}
 
@@ -219,7 +216,7 @@ const Contact = () => {
 
       {/* Footer */}
       <footer className="contact-footer-new">
-        <p>© 2026 BOSSONY Khadija. All rights reserved.</p>
+        <p>© 2026 BOSSONY Khadija</p>
       </footer>
     </div>
   );

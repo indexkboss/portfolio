@@ -4,16 +4,12 @@ import './Projects.css';
 import { useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { Sun, Moon } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
 
 const Projects = () => {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // Toggle dark/light mode
-  useEffect(() => {
-    document.body.classList.toggle('light-mode', !isDarkMode);
-  }, [isDarkMode]);
 
   const allProjects = [
     { 
@@ -127,17 +123,16 @@ const Projects = () => {
 
   return (
     <div className="projects-page">
-         <nav className="navbar">
-      <div className="logo" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold', fontSize: '24px', color: '#fff' }}>
+         {/*<nav className="navbar">
+       <Link to="/" className="logo" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold', fontSize: '24px', color: '#fff', textDecoration: 'none' }}>
         Hi there!
-      </div>
-
+      </Link>
       <div className="nav-links">
         <Link to="/">Home</Link>
         <Link to="/projects">Projects</Link>
         <Link to="/contact">Contact</Link>
 
-        {/* Theme Toggle Button */}
+        {/* Theme Toggle Button 
         <button 
           className="theme-toggle"
           onClick={() => setIsDarkMode(!isDarkMode)}
@@ -146,7 +141,9 @@ const Projects = () => {
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
       </div>
-    </nav>
+    </nav> */}
+
+    <Navbar/>
 
 
 
@@ -158,7 +155,8 @@ const Projects = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          My Projects  comming soon
+          Comming soon 
+          {/* My Projects instead of comming soon! */}
         </motion.h1>
         {/* <motion.p
           initial={{ opacity: 0 }}
@@ -166,12 +164,12 @@ const Projects = () => {
           transition={{ delay: 0.1 }}
         >
           Explore my work across different domains
-        </motion.p>
+        </motion.p> */}
       </div>
 
-      {/* Filters 
+      {/* Filters */}
       <div className="projects-filters">
-        {categories.map((cat) => (
+       {/* {categories.map((cat) => (
           <button
             key={cat.id}
             className={`filter-btn ${activeFilter === cat.id ? 'active' : ''}`}
@@ -180,12 +178,12 @@ const Projects = () => {
             <span className="filter-icon">{cat.icon}</span>
             {cat.label}
           </button>
-        ))}
+        ))} */}
       </div>
 
-      {/* Projects Grid 
+      {/* Projects Grid */}
       <div className="projects-grid">
-        {filteredProjects.map((project, i) => (
+       {/* {filteredProjects.map((project, i) => (
           <motion.div
             key={i}
             className="project-card"
@@ -218,6 +216,10 @@ const Projects = () => {
           </motion.div>
         ))}*/}
       </div> 
+            {/* Footer */}
+      <footer className="projects-footer-new">
+        <p>© 2026 BOSSONY Khadija</p>
+      </footer>
     </div>
   );
 };

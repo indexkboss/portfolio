@@ -112,7 +112,9 @@ const CertificateModal = ({ isOpen, onClose, certificate, allCertificates = [] }
                   href={currentCertificate.verifyUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="cert-verify-link"
+                  // className="cert-verify-link"
+                  className="cert-download-btn"
+                  style={{marginRight:'55px', textDecoration:'none'}}
                 >
                   Verify Certificate
                 </a>

@@ -50,11 +50,11 @@
   left: 50%;
   transform: translateX(-50%);
 }
-
-/* Light mode adjustment if needed */
+/* 
+/* Light mode adjustment if needed 
 body.light-mode .carousel-title {
   color: var(--text-main);
-}
+} */
 
 /* View More Button */
 .view-more-btn {

@@ -1,26 +1,9 @@
 .projects-page {
   min-height: 100vh;
-  background: radial-gradient(circle at top, #141726, #0b0d10 70%);
   padding-bottom: 4rem;
   color: var(--text-main);
 }
 
-/* Navbar */
-.projects-navbar {
-  position: sticky;
-  top: 0;
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 5vw;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
 
 .projects-logo {
   font-size: 1.25rem;
@@ -201,93 +184,6 @@
   border: 1px solid var(--border);
 }
 
-/* Light Mode Styles */
-body.light-mode .projects-page {
-  background: #e4e9ee !important;
-}
-
-body.light-mode .projects-navbar {
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(12px);
-}
-
-body.light-mode .projects-logo {
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-body.light-mode .projects-nav-links a {
-  color: #1e293b;
-}
-
-body.light-mode .projects-nav-links a:hover {
-  color: #0ea5e9;
-}
-
-body.light-mode .projects-header h1 {
-  background: linear-gradient(135deg, #1e293b 0%, #0ea5e9 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-body.light-mode .projects-header p {
-  color: #5a6a7a;
-}
-
-body.light-mode .filter-btn {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  color: #5a6a7a;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-}
-
-body.light-mode .filter-btn:hover {
-  border-color: #0ea5e9;
-  color: #0ea5e9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
-}
-
-body.light-mode .filter-btn.active {
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-  color: white;
-  border-color: transparent;
-  box-shadow: 0 8px 20px rgba(14, 165, 233, 0.15);
-}
-
-body.light-mode .project-card {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-}
-
-body.light-mode .project-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(14, 165, 233, 0.08);
-  border-color: #0ea5e9;
-}
-
-body.light-mode .project-content h3 {
-  color: #1e293b;
-}
-
-body.light-mode .project-content p {
-  color: #5a6a7a;
-}
-
-body.light-mode .project-tech span {
-  background: #eef2f6;
-  color: #475569;
-  border: none;
-}
-
-body.light-mode .project-category-badge {
-  background: rgba(255, 255, 255, 0.9);
-  color: #1e293b;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -397,40 +293,6 @@ body.light-mode .project-category-badge {
   border-color: transparent;
 }
 
-/* Light mode navbar */
-body.light-mode .navbar {
-  background: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-body.light-mode .navbar .logo {
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-body.light-mode .navbar .nav-links a {
-  color: #1e293b;
-}
-
-body.light-mode .navbar .nav-links a:hover {
-  color: #0ea5e9;
-}
-
-body.light-mode .navbar .nav-links a::after {
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-}
-
-body.light-mode .theme-toggle {
-  background: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  color: #1e293b;
-}
-
-body.light-mode .theme-toggle:hover {
-  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
-  color: white;
-}
 
 /* Dropdown styles */
 .dropdown {
@@ -491,21 +353,6 @@ body.light-mode .theme-toggle:hover {
   background: rgba(255, 255, 255, 0.05);
 }
 
-/* Light mode dropdown */
-body.light-mode .dropdown-content {
-  background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
-}
-
-body.light-mode .dropdown-content a {
-  color: #1e293b;
-}
-
-body.light-mode .dropdown-content a:hover {
-  color: #0ea5e9;
-  background: #f0f3f7;
-}
 
 .nav-links {
   font-weight: 300;
@@ -523,4 +370,17 @@ body.light-mode .dropdown-content a:hover {
   .theme-toggle {
     display: flex;
   }
+}
+
+
+/* ===============================
+   FOOTER
+================================ */
+
+.projects-footer-new {
+  padding: 1.5rem 5vw;
+  text-align: center;
+  font-size: .8rem;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255,255,255,.05);
 }

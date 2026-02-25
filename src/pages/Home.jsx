@@ -24,16 +24,11 @@ const Home = () => {
   
   const [activeCategory, setActiveCategory] = useState('all');
   const [filteredProjects, setFilteredProjects] = useState([]);
-  const [isDarkMode, setIsDarkMode] = useState(true);
   
   // Add this state with your other useState declarations
   const [selectedCertificate, setSelectedCertificate] = useState(null);
   const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
 
-  // Toggle dark/light mode
-  useEffect(() => {
-    document.body.classList.toggle('light-mode', !isDarkMode);
-  }, [isDarkMode]);
 
   // Set filtered projects when component mounts or category changes
   useEffect(() => {
@@ -69,6 +64,106 @@ const Home = () => {
     return () => clearTimeout(timeout);
   }, [currentDemoIndex]);
 
+
+//canvas:
+// Replace your current useEffect with this one
+useEffect(() => {
+  const canvas = document.getElementById("light-bg-canvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  let animationId;
+  let particles = [];
+
+  const resize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.size = Math.random() * 4 + 2;
+      this.speedX = (Math.random() - 0.5) * 0.8;
+      this.speedY = (Math.random() - 0.5) * 0.8;
+      this.opacity = Math.random() * 0.6 + 0.2;
+      // Alternate between your accent colors
+    this.color = Math.random() > 0.5 ? 'rgb(147, 197, 253)' : '#db2778'; // Softer blue and lavender
+    }
+
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+
+      // Bounce off edges
+      if (this.x < 0 || this.x > canvas.width) {
+        this.speedX *= -1;
+        this.x = Math.max(0, Math.min(this.x, canvas.width));
+      }
+      if (this.y < 0 || this.y > canvas.height) {
+        this.speedY *= -1;
+        this.y = Math.max(0, Math.min(this.y, canvas.height));
+      }
+
+      // Slowly fade and reset to keep it fresh
+      this.opacity -= 0.002;
+      if (this.opacity <= 0.1) {
+        this.reset();
+        this.opacity = 0.6;
+      }
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.globalAlpha = this.opacity;
+      ctx.fill();
+      
+      // Add a small glow
+      ctx.shadowColor = this.color;
+      ctx.shadowBlur = 10;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  // Create 30 particles
+  particles = Array.from({ length: 30 }, () => new Particle());
+
+  const animate = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (!document.body.classList.contains("light-mode")) {
+      animationId = requestAnimationFrame(animate);
+      return;
+    }
+
+    // Draw all particles
+    particles.forEach(particle => {
+      particle.update();
+      particle.draw();
+    });
+
+    animationId = requestAnimationFrame(animate);
+  };
+
+  animate();
+
+  return () => {
+    cancelAnimationFrame(animationId);
+    window.removeEventListener("resize", resize);
+  };
+}, []);
+
   const handlePrev = () => {
     setDirection(-1);
     setCurrentDemoIndex((prev) => (prev - 1 + websiteDemosData.length) % websiteDemosData.length);
@@ -93,10 +188,6 @@ const Home = () => {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: direction > 0 ? -300 : 300, opacity: 0 }}
       transition={{ duration: 0.4, ease: "linear" }}
-      onClick={() => {
-        setSelectedDemo(demo);
-        setIsModalOpen(true);
-      }}
     >
       <div className="browser-header">
         <div className="dots">
@@ -110,6 +201,7 @@ const Home = () => {
 
   return (
     <div className="home">
+      <canvas id="light-bg-canvas"></canvas>
       <Navbar/>
 
       {/* HERO */}
