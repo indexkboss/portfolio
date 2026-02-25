@@ -1,4 +1,3 @@
-// components/Navbar.js
 import { Link, useLocation } from "react-router-dom";
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/themeContext'; // Import useTheme
@@ -27,7 +26,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="logo" style={{ fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold', fontSize: '24px', color: '#fff', textDecoration: 'none' }}>
+      <Link to="/" className="logo" >
         Hi there!
       </Link>
 

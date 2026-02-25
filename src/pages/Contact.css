@@ -103,7 +103,51 @@
   -webkit-text-fill-color: transparent;
 }
 
+body.light-mode .split-card-right h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: .3rem;
+  background :#0b0d10;
+;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+body.light-mode .contact-header-new h1  {
+  font-style: normal !important;
+  background: linear-gradient(135deg, #6ec6f8, #253569, #0b0d10) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
 
+}
+
+body.light-mode .split-card-left h3{
+    font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: .3rem;
+  background: linear-gradient(135deg, #6ec6f8, #0b0d10);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+body.light-mode .split-submit-btn {
+  margin-top: .5rem;
+  padding: .8rem;
+  border-radius: 10px;
+  border: none;
+  font-size: .9rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #6ec6f8, #0b0d10);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
 .split-card-left p,
 .split-card-right p {

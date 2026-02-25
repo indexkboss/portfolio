@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Libre+Baskerville&display=swap');
+
 .navbar {
   position: fixed;
   top: 0;
@@ -24,6 +26,9 @@
   cursor: pointer;
 }
 
+
+
+
 .navbar .nav-links {
   display: flex;
   align-items: center;
@@ -47,6 +52,12 @@
   font-weight: 800;
 }
 
+
+body.light-mode .navbar .nav-links a:hover {
+  color: rgb(0, 0, 0) !important;
+  font-weight: 800;
+}
+
 .navbar .nav-links a::after {
   content: '';
   position: absolute;
@@ -56,6 +67,8 @@
   height: 2px;
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   transition: width 0.3s ease;
+    
+
 }
 
 .navbar .nav-links a:hover::after { 
@@ -93,7 +106,7 @@
 .dropbtn {
   background: none;
   border: none;
-  color: var(--text-main);
+  color: var(--text-main); /*thiss!!!!*/
   cursor: pointer;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 800 !important; 
@@ -103,9 +116,25 @@
   letter-spacing: 0.5px;
 }
 
+body.light-mode .dropbtn {
+  background: none;
+  color: var(--text-main) !important; /*thiss!!!!*/
+}
+
+body.light-mode .dropbtn:hover {
+  background: none;
+  color: var(--text-main) !important; /*thiss!!!!*/
+}
+
+
+
 .dropdown:hover .dropbtn {
   color: #ffffff !important;
-  text-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  font-weight: 900 !important; 
+}
+
+body.light-mode .dropdown:hover .dropbtn {
+  color: var(--text-main) !important; /*thiss!!!!*/
   font-weight: 900 !important; 
 }
 
@@ -203,4 +232,31 @@
     font-size: 0.9rem;
     padding: 10px 16px;
   }
+}
+
+
+
+/* Add this to your Navbar.css file */
+
+/* Light mode styles for the logo */
+body.light-mode .navbar .logo {
+  background: transparent !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #000000 !important;
+  color: #000000 !important;
+
+
+   font-family: 'Courier New', Courier, monospace;
+ font-weight: 'bold';
+ font-size: '24px';
+ color: '#fff';
+text-decoration: 'none' 
+}
+.navbar .logo {
+
+ font-family: 'Courier New', Courier, monospace;
+ font-weight: 'bold';
+ font-size: '24px';
+ color: '#fff';
+text-decoration: 'none' 
 }

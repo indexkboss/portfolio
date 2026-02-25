@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Cormorant+Garamond:wght@700&family=Libre+Baskerville:wght@700&family=Montserrat:wght@700;900&display=swap');
 
 
 /* Base Styles */
@@ -44,6 +45,26 @@ body {
   -webkit-text-fill-color: transparent;
   margin-bottom: 10px;
 }
+
+body.light-mode .hero-name {
+
+  color: var(--text-main) !important; 
+  font-weight: 700;
+  position: relative;
+}
+
+body.light-mode .hero-name::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+  border-radius: 2px;
+}
+
 
 
 .hero-subtitle {
@@ -980,3 +1001,22 @@ body {
 .a-downloadBtn {
   text-decoration: none;
 }
+
+
+
+/* Add this to your Home.css file */
+
+/* CEO/Executive font for the name in light mode */
+body.light-mode .hero-name {
+  font-style: normal !important;
+  font-size: clamp(3.5rem, 8vw, 6.5rem) !important;
+  background: linear-gradient(135deg, #6ec6f8, #253569, #0b0d10) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1) !important;
+
+}
+
+
