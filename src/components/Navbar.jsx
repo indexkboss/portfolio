@@ -35,7 +35,7 @@ const Navbar = () => {
         <Link to="/projects">Projects</Link>
 
         <div className="dropdown">
-          <button className="dropbtn">About Me</button>
+          <button className="dropbtn">Overview</button>
           <div className="dropdown-content">
             <button onClick={() => scrollToSection('experience')} className="dropdown-link">Experience</button>
             <button onClick={() => scrollToSection('education')} className="dropdown-link">Education</button>
