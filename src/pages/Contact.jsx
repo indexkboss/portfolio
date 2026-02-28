@@ -31,9 +31,9 @@ const Contact = () => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
-  /* =========================
+  /* ======================
      INPUT CHANGE
-  ========================= */
+  ====================== */
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -41,23 +41,23 @@ const Contact = () => {
     });
   };
 
-  /* =========================
+  /* ======================
      FORM SUBMIT
-  ========================= */
+  ====================== */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setSubmitStatus(null);
     setErrorMessage("");
 
-    /* ---------- CLIENT VALIDATION ---------- */
+    /* ---------- VALIDATION ---------- */
     if (!formData.name.trim()) {
       setErrorMessage("Please enter your name.");
       setSubmitStatus("error");
       return;
     }
 
-    if (!formData.email.includes("@")) {
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
       setErrorMessage("Please enter a valid email address.");
       setSubmitStatus("error");
       return;
@@ -84,35 +84,60 @@ const Contact = () => {
       console.log("Email sent:", result);
 
       setSubmitStatus("success");
+
       setFormData({
         name: "",
         email: "",
         message: "",
       });
     } catch (error) {
-      console.error("EmailJS Error:", error);
+      console.error("EmailJS ERROR:", error);
 
       let message =
-        "Something went wrong while sending the message.";
+        "Something went wrong while sending your message.";
 
-      if (error?.text) {
-        if (error.text.includes("Invalid service")) {
-          message =
-            "Email service configuration error.";
-        } else if (error.text.includes("Invalid template")) {
-          message =
-            "Email template not found.";
-        } else if (error.text.includes("Public Key")) {
-          message =
-            "Authentication failed.";
-        } else if (
-          error.text.toLowerCase().includes("rate")
-        ) {
-          message =
-            "Too many requests. Please wait before trying again.";
-        } else {
-          message = error.text;
-        }
+      /* ===== SMART ERROR DETECTION ===== */
+
+      if (!navigator.onLine) {
+        message =
+          "No internet connection detected.";
+      }
+
+      else if (
+        error?.message === "Failed to fetch"
+      ) {
+        message =
+          "Request blocked by browser or network. Disable AdBlock/Brave Shields or try another browser.";
+      }
+
+      else if (error?.status === 429) {
+        message =
+          "Too many requests. Please wait a moment before trying again.";
+      }
+
+      else if (
+        error?.text?.includes("Invalid service")
+      ) {
+        message =
+          "Email service configuration error.";
+      }
+
+      else if (
+        error?.text?.includes("Invalid template")
+      ) {
+        message =
+          "Email template configuration error.";
+      }
+
+      else if (
+        error?.text?.includes("Public Key")
+      ) {
+        message =
+          "Authentication failed. Contact form temporarily unavailable.";
+      }
+
+      else if (error?.text) {
+        message = error.text;
       }
 
       setErrorMessage(message);
@@ -122,22 +147,22 @@ const Contact = () => {
     }
   };
 
-  /* =========================
-     AUTO HIDE MESSAGE
-  ========================= */
+  /* ======================
+     AUTO HIDE ALERT
+  ====================== */
   useEffect(() => {
     if (submitStatus) {
       const timer = setTimeout(() => {
         setSubmitStatus(null);
-      }, 5000);
+      }, 6000);
 
       return () => clearTimeout(timer);
     }
   }, [submitStatus]);
 
-  /* =========================
+  /* ======================
      CONTACT ICONS
-  ========================= */
+  ====================== */
   const contactIcons = [
     {
       icon: <Github size={22} />,
@@ -178,6 +203,7 @@ const Contact = () => {
 
       {/* CARD */}
       <div className="split-card">
+
         {/* LEFT */}
         <div className="split-card-left">
           <h3>Connect With Me</h3>
@@ -209,7 +235,7 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* RIGHT FORM */}
+        {/* FORM */}
         <div className="split-card-right">
           <h3>Send a Message</h3>
 
@@ -268,7 +294,7 @@ const Contact = () => {
               <div className="success-message-split">
                 <MessageCircle size={18} />
                 <span>
-                  Message sent successfully!
+                  Message sent successfully ✅
                 </span>
               </div>
             )}
@@ -289,6 +315,7 @@ const Contact = () => {
         <div className="footer-bottom">
           © 2026 BOSSONY Khadija — Built with{" "}
           <Heart size={12} /> <Code2 size={12} />
+
           <a href="/CVPortfolio.pdf" download>
             Download CV <ExternalLink size={12} />
           </a>
