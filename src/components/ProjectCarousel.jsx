@@ -183,8 +183,8 @@ const ProjectCarousel = ({ projects, category }) => {
                   </div>
                 </div>
                 <div className="modal-actions">
-                  <motion.a href="#" className="modal-btn primary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}><FaExternalLinkAlt /> Live Demo</motion.a>
-                  <motion.a href="#" className="modal-btn secondary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}><FaGithub /> View Code</motion.a>
+                  <motion.a href="/projects" className="modal-btn primary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}><FaExternalLinkAlt /> Live Demo</motion.a>
+                  <motion.a href="/projects" className="modal-btn secondary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}><FaGithub /> View Code</motion.a>
                 </div>
               </div>
             </motion.div>

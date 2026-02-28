@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from "react-router-dom";
-import { Sun, Moon, Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, Instagram, MessageCircle, Sparkles } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Github, Linkedin, Twitter, Instagram, MessageCircle, Sparkles } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 import './Contact.css';
 import Navbar from '../components/Navbar';
+import { ChevronLeft, ChevronRight, CheckCircle, Star, Sun, Moon, Award, Calendar, ExternalLink } from 'lucide-react';
+import {  ArrowUp, Code2, Heart } from 'lucide-react';
 
 const Contact = () => {
   const formRef = useRef();
@@ -215,9 +217,81 @@ const Contact = () => {
       </motion.div>
 
       {/* Footer */}
-      <footer className="contact-footer-new">
-        <p>© 2026 BOSSONY Khadija</p>
-      </footer>
+
+<footer className="footer-main">
+  <div className="footer-gradient-line" />
+
+  <div className="footer-inner">
+    {/* Brand */}
+    <motion.div
+      className="footer-brand"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+    >
+      <span className="footer-logo">BK</span>
+      <div>
+        <p className="footer-name">BOSSONY Khadija</p>
+        <p className="footer-tagline">AI &amp; Big Data Engineering</p>
+      </div>
+    </motion.div>
+
+    {/* Nav */}
+    <motion.nav
+      className="footer-nav"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+    >
+      <a href="#experience" className="footer-nav-link">Experience</a>
+      <a href="#education" className="footer-nav-link">Education</a>
+      <a href="#skills" className="footer-nav-link">Skills</a>
+      <a href="#certifications" className="footer-nav-link">Certifications</a>
+      <Link to="/Contact" className="footer-nav-link">Contact</Link>
+    </motion.nav>
+
+    {/* Socials + Back to top */}
+    <motion.div
+      className="footer-right"
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+    >
+      <div className="footer-socials">
+        <a href="https://github.com/indexkboss" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="GitHub">
+          <Github size={18} />
+        </a>
+        <a href="https://linkedin.com/in/khadijabossony" target="_blank" rel="noopener noreferrer" className="footer-social-btn" aria-label="LinkedIn">
+          <Linkedin size={18} />
+        </a>
+        <a href="mailto:bossonykhadijae@gmail.com" className="footer-social-btn" aria-label="Email">
+          <Mail size={18} />
+        </a>
+      </div>
+      <button
+        className="footer-top-btn"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top"
+      >
+        <ArrowUp size={16} />
+      </button>
+    </motion.div>
+  </div>
+
+  {/* Bottom bar */}
+  <div className="footer-bottom">
+    <span className="footer-copy">
+      © 2026 BOSSONY Khadija — Built with <Heart size={12} className="footer-heart" /> and <Code2 size={12} className="footer-code" />
+    </span>
+    <a href="/CVPortfolio.pdf" download className="footer-cv-link">
+      Download CV <ExternalLink size={12} />
+    </a>
+  </div>
+</footer>
+
     </div>
   );
 };

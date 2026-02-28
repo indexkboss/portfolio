@@ -730,7 +730,6 @@ useEffect(() => {
 </section>
       </div>
 
-      <footer className="footer">
 
 <footer className="footer-main">
   <div className="footer-gradient-line" />
@@ -805,7 +804,6 @@ useEffect(() => {
     </a>
   </div>
 </footer>
-      </footer>
 
       <DemoModal
         isOpen={isModalOpen}

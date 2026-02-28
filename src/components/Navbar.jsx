@@ -27,7 +27,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link to="/" className="logo" >
-        Hi there!
+        &lt;Khadija/&gt;
       </Link>
 
       <div className="nav-links">
