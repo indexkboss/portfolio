@@ -1258,3 +1258,150 @@ body.light-mode .footer-nav-link:hover {
     font-size: 0.78rem;
   }
 }
+
+/**/
+/* ===== SECTION SEPARATORS ===== */
+/* Dot pattern separator */
+.dots-separator {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 2rem 0;
+  position: relative;
+  z-index: 5;
+}
+
+.dots-separator span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+  animation: floatDot 3s ease-in-out infinite;
+}
+
+.dots-separator span:nth-child(2) {
+  background: var(--accent-2);
+  opacity: 0.6;
+  width: 10px;
+  height: 10px;
+  animation-delay: 0.2s;
+}
+
+.dots-separator span:nth-child(3) {
+  background: var(--accent);
+  opacity: 0.8;
+  animation-delay: 0.4s;
+}
+
+/* Section divider with line and icon */
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 5;
+}
+
+.section-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--accent), 
+    var(--accent-2), 
+    var(--accent), 
+    transparent
+  );
+  opacity: 0.5;
+}
+
+.section-divider-icon {
+  color: var(--accent-2);
+  opacity: 0.8;
+  font-size: 1.2rem;
+  animation: pulse 2s infinite;
+}
+
+/* Simple gradient separator */
+.section-separator {
+  width: 80%;
+  margin: 2rem auto;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--accent) 20%, 
+    var(--accent-2) 50%, 
+    var(--accent) 80%, 
+    transparent 100%
+  );
+  opacity: 0.3;
+  position: relative;
+  z-index: 5;
+}
+
+/* Animations */
+@keyframes floatDot {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* Light mode adjustments */
+body.light-mode .dots-separator span {
+  opacity: 0.6;
+}
+
+body.light-mode .section-divider-line {
+  opacity: 0.8;
+}
+
+body.light-mode .section-separator {
+  opacity: 0.5;
+}
+
+
+/* Add this at the end of Home.css */
+
+/* Consistent overlay for all content */
+.home {
+  position: relative;
+}
+
+.home::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0,0,0,0.2) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content is above the overlay */
+.hero,
+.carousel-section,
+.sections-wrapper,
+.footer-main {
+  position: relative;
+  z-index: 1;
+}
+
+/* Light mode adjustment */
+body.light-mode .home::before {
+  background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(255,255,255,0.1) 100%);
+}
+
+
+/* Light mode pour footer-main */
+body.light-mode .footer-main {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e6f0fa 100%) !important;
+}

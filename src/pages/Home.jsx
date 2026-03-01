@@ -13,9 +13,10 @@ import { experiencesData } from "../data/experiencesData";
 import { educationData } from "../data/educationData";
 import { websiteDemosData } from "../data/websiteDemosData";
 import { allCertificatesData } from "../data/allCertificatesData";
-import { Link } from "react-router-dom";
 import {  Github, Linkedin, Mail, ArrowUp, Code2, Heart } from 'lucide-react';
 import { useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+ 
 
 
 const Home = () => {
@@ -31,7 +32,21 @@ const Home = () => {
   // Add this state with your other useState declarations
   const [selectedCertificate, setSelectedCertificate] = useState(null);
   const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
-
+  const navigate = useNavigate();
+  // Handle smooth scroll to section
+  const scrollToSection = (sectionId) => {
+    if (location.pathname !== '/') {
+      navigate("/", { state: { sectionId } });
+      return;
+    }
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   // Set filtered projects when component mounts or category changes
   useEffect(() => {
@@ -178,6 +193,30 @@ useEffect(() => {
   };
 //fixing the navigation through the overview elements :
 const location = useLocation();
+// useEffect(() => {
+//   if (!location.state?.sectionId) return;
+
+//   const sectionId = location.state.sectionId;
+
+//   const scrollToTarget = () => {
+//     const element = document.getElementById(sectionId);
+
+//     if (element) {
+//       element.scrollIntoView({
+//         behavior: "smooth",
+//         block: "start",
+//       });
+//     } else {
+//       requestAnimationFrame(scrollToTarget);
+//     }
+//   };
+
+//   scrollToTarget();
+// }, [location]);
+
+
+// fixing the navigation through the overview elements :
+// const location = useLocation();
 useEffect(() => {
   if (!location.state?.sectionId) return;
 
@@ -187,18 +226,24 @@ useEffect(() => {
     const element = document.getElementById(sectionId);
 
     if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+      const navbarHeight = 80; // Même valeur que dans Projects.jsx
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
       });
     } else {
       requestAnimationFrame(scrollToTarget);
     }
   };
 
-  scrollToTarget();
+  // Petit délai pour s'assurer que la page est bien chargée
+  setTimeout(scrollToTarget, 100);
 }, [location]);
-  const renderDemoWebsite = (demo) => (
+
+const renderDemoWebsite = (demo) => (
     <motion.div
       key={demo.title}
       className="demo-website"
@@ -258,12 +303,22 @@ useEffect(() => {
           </div>
         </div>
 
+
         <div className="hero-right" style={{ flex: 1, marginTop: '3.5rem', position: 'relative' }}>
           <AnimatePresence mode="wait" initial={false}>
             {renderDemoWebsite(websiteDemosData[currentDemoIndex])}
           </AnimatePresence>
         </div>  
       </div>
+
+         {/* Separator after Hero */}
+    <div className="dots-separator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+
 
       <div className="carousel-section">
         <ProjectCarousel 
@@ -273,6 +328,13 @@ useEffect(() => {
       </div>
 
       <div className="sections-wrapper">
+
+    {/* Separator after Projects */}
+    <div className="section-divider">
+      <div className="section-divider-line"></div>
+      <span className="section-divider-icon">✦</span>
+      <div className="section-divider-line"></div>
+    </div>
 
         {/* EXPERIENCE */}
         <section className="section" id="experience">
@@ -328,6 +390,9 @@ useEffect(() => {
             ))}
           </div>
         </section>
+
+              <div className="section-separator"></div>
+
 
         {/* EDUCATION */}
         <section id="education" className="section">
@@ -397,6 +462,13 @@ useEffect(() => {
             ))}
           </div>
         </section>
+
+          {/* Separator after Education */}
+      <div className="section-divider">
+        <div className="section-divider-line"></div>
+        <span className="section-divider-icon">✦</span>
+        <div className="section-divider-line"></div>
+      </div>
 
        {/* Skills */}
 <section className="section" id="skills">
@@ -504,6 +576,9 @@ useEffect(() => {
     </motion.div>
   </div>
 </section>
+
+      <div className="section-separator"></div>
+
         {/* CERTIFICATIONS */}
 <section id="certifications" className="section">
   <h2 className="section-title">Certifications & Courses</h2>
@@ -753,7 +828,12 @@ useEffect(() => {
 </section>
       </div>
 
-
+    {/* Separator before Footer */}
+    <div className="dots-separator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
 <footer className="footer-main">
   <div className="footer-gradient-line" />
 
@@ -781,10 +861,11 @@ useEffect(() => {
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <a href="#experience" className="footer-nav-link">Experience</a>
-      <a href="#education" className="footer-nav-link">Education</a>
-      <a href="#skills" className="footer-nav-link">Skills</a>
-      <a href="#certifications" className="footer-nav-link">Certifications</a>
+            <a onClick={() => scrollToSection('experience')} className="footer-nav-link">Experience</a>
+            <a onClick={() => scrollToSection('education')} className="footer-nav-link">Education</a>
+            <a onClick={() => scrollToSection('skills')} className="footer-nav-link">Skills</a>
+            <a onClick={() => scrollToSection('certifications')} className="footer-nav-link">Certifications</a>
+
       <Link to="/Contact" className="footer-nav-link">Contact</Link>
     </motion.nav>
 

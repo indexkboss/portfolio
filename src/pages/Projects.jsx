@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import './Projects.css';
 import { useEffect } from 'react';
-import { Link } from "react-router-dom";
 import Navbar from '../components/Navbar';
 import { ChevronLeft, ChevronRight, CheckCircle, Star, Sun, Moon, Award, Calendar, ExternalLink } from 'lucide-react';
 import {  Github, Linkedin, Mail, ArrowUp, Code2, Heart } from 'lucide-react';
+import { Link, useNavigate } from "react-router-dom";
+ 
 
 
 const Projects = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const navigate = useNavigate();
 
 
   const allProjects = [
@@ -110,6 +112,25 @@ const Projects = () => {
       bgGradient: "linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)"
     }
   ];
+
+// Handle smooth scroll to section
+  const scrollToSection = (sectionId) => {
+    if (location.pathname !== '/') {
+      navigate("/", { state: { sectionId } });
+      return;
+    }
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+         top: offsetPosition,
+        behavior: 'smooth'
+      
+
+      });
+    }
+  };
+
+
 
   const filteredProjects = activeFilter === 'all' 
     ? allProjects 
@@ -246,10 +267,11 @@ const Projects = () => {
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: 0.1 }}
     >
-      <a href="#experience" className="footer-nav-link">Experience</a>
-      <a href="#education" className="footer-nav-link">Education</a>
-      <a href="#skills" className="footer-nav-link">Skills</a>
-      <a href="#certifications" className="footer-nav-link">Certifications</a>
+            <a onClick={() => scrollToSection('experience')} className="footer-nav-link">Experience</a>
+            <a onClick={() => scrollToSection('education')} className="footer-nav-link">Education</a>
+            <a onClick={() => scrollToSection('skills')} className="footer-nav-link">Skills</a>
+            <a onClick={() => scrollToSection('certifications')} className="footer-nav-link">Certifications</a>
+
       <Link to="/Contact" className="footer-nav-link">Contact</Link>
     </motion.nav>
 
