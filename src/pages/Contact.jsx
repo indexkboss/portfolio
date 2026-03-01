@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Mail,
   Phone,
@@ -19,13 +20,11 @@ import "./Contact.css";
 import Navbar from "../components/Navbar";
 
 const Contact = () => {
-  // Debug: Log to see if env variable is loading
+  const navigate = useNavigate();
+  
+  // Formspree setup
   console.log("Env variable:", import.meta.env.VITE_FORMSPREE_ID);
-  
-  // Get Formspree ID from env
   const formspreeId = import.meta.env.VITE_FORMSPREE_ID;
-  
-  // Check if ID exists, otherwise use a fallback for testing
   const [state, handleSubmit] = useForm(formspreeId || "mzdaqoer");
   
   const [formData, setFormData] = useState({
@@ -38,11 +37,12 @@ const Contact = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [configError, setConfigError] = useState(false);
 
-  // Check for configuration errors on mount
+  /* ======================
+     CHECK CONFIGURATION
+  ====================== */
   useEffect(() => {
     if (!formspreeId) {
       console.error("Formspree ID is missing! Check your .env file.");
-      console.log("Make sure you have: VITE_FORMSPREE_ID=your_id_here");
       setConfigError(true);
       setErrorMessage("Contact form configuration error. Please try again later.");
     } else {
@@ -98,7 +98,7 @@ const Contact = () => {
   };
 
   /* ======================
-     HANDLE FORMSPREE STATE CHANGES
+     HANDLE FORMSPREE STATE
   ====================== */
   useEffect(() => {
     if (state.succeeded) {
@@ -143,6 +143,28 @@ const Contact = () => {
   }, [submitStatus]);
 
   /* ======================
+     SCROLL TO SECTION
+  ====================== */
+  const scrollToSection = (sectionId) => {
+    if (window.location.pathname !== '/') {
+      navigate("/", { state: { sectionId } });
+      return;
+    }
+    
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const navbarHeight = 80;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  /* ======================
      CONTACT ICONS
   ====================== */
   const contactIcons = [
@@ -150,21 +172,25 @@ const Contact = () => {
       icon: <Github size={22} />,
       label: "GitHub",
       url: "https://github.com/indexkboss",
+      color: "#333",
     },
     {
       icon: <Linkedin size={22} />,
       label: "LinkedIn",
       url: "https://www.linkedin.com/in/khadijabossony",
+      color: "#0077B5",
     },
     {
       icon: <Mail size={22} />,
       label: "Email",
       url: "mailto:bossonykhadijae@gmail.com",
+      color: "#FF006E",
     },
     {
       icon: <Phone size={22} />,
       label: "Phone",
       onClick: () => (window.location.href = "tel:+212679101440"),
+      color: "#8338EC",
     },
   ];
 
@@ -204,17 +230,7 @@ const Contact = () => {
             bossonykhadijae@gmail.com
           </a>
         </div>
-        <footer className="footer-main">
-          <div className="footer-bottom">
-            © 2026 BOSSONY Khadija — Built with <Heart size={12} /> <Code2 size={12} />
-            <a href="/CVPortfolio.pdf" download>
-              Download CV <ExternalLink size={12} />
-            </a>
-          </div>
-          <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-            <ArrowUp size={16} />
-          </button>
-        </footer>
+        <Footer scrollToSection={scrollToSection} />
       </div>
     );
   }
@@ -228,138 +244,255 @@ const Contact = () => {
         className="contact-header-new"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
       >
         <h1>Get in Touch</h1>
         <p>Have a question? I'd love to hear from you!</p>
       </motion.div>
 
-      {/* CARD */}
-      <div className="split-card">
-        {/* LEFT */}
-        <div className="split-card-left">
-          <h3>Connect With Me</h3>
+      {/* SPLIT CARD */}
+      <motion.div
+        className="split-card-container"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        <div className="split-card">
+          {/* LEFT SIDE - CONNECT */}
+          <div className="split-card-left">
+            <h3>Connect With Me</h3>
+            <p>Find me on social media or reach out directly</p>
 
-          <div className="icons-grid">
-            {contactIcons.map((item, index) =>
-              item.url ? (
-                <a
-                  key={index}
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="icon-item"
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                </a>
-              ) : (
-                <button
-                  key={index}
-                  onClick={item.onClick}
-                  className="icon-item"
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                </button>
-              )
-            )}
-          </div>
-          
-          <div className="troubleshoot-tip">
-            <small>
-              ⚡ Having trouble? Formspree works with ad blockers! 
-              Just make sure JavaScript is enabled.
-            </small>
-          </div>
-        </div>
-
-        {/* FORM */}
-        <div className="split-card-right">
-          <h3>Send a Message</h3>
-
-          <form onSubmit={onSubmit} className="split-form">
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Your Name"
-              required
-            />
-
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email Address"
-              required
-            />
-
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="Your Message"
-              rows="4"
-              required
-            />
-
-            <input
-              type="hidden"
-              name="_replyto"
-              value={formData.email}
-            />
+            <div className="icons-grid">
+              {contactIcons.map((item, index) =>
+                item.url ? (
+                  <motion.a
+                    key={index}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="icon-item"
+                    whileHover={{ y: -3, scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div
+                      className="icon-circle"
+                      data-type={item.label.toLowerCase()}
+                    >
+                      {item.icon}
+                    </div>
+                    <span className="icon-label">
+                      {item.label}
+                    </span>
+                  </motion.a>
+                ) : (
+                  <motion.button
+                    key={index}
+                    onClick={item.onClick}
+                    className="icon-item"
+                    whileHover={{ y: -3, scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div
+                      className="icon-circle"
+                      data-type={item.label.toLowerCase()}
+                    >
+                      {item.icon}
+                    </div>
+                    <span className="icon-label">
+                      {item.label}
+                    </span>
+                  </motion.button>
+                )
+              )}
+            </div>
             
-            <input
-              type="hidden"
-              name="_subject"
-              value={`New message from ${formData.name}`}
-            />
+            <div className="troubleshoot-tip">
+              <small>
+                ⚡ Having trouble? Formspree works with ad blockers! 
+                Just make sure JavaScript is enabled.
+              </small>
+            </div>
+          </div>
 
-            <motion.button
-              type="submit"
-              disabled={state.submitting}
-              className="split-submit-btn"
-            >
-              {state.submitting ? "Sending..." : "Send Message"}
-              <Send size={16} />
-            </motion.button>
+          {/* RIGHT SIDE - FORM */}
+          <div className="split-card-right">
+            <h3>Send a Message</h3>
+            <p>I'll get back to you within 24 hours</p>
 
-            {submitStatus === "success" && (
-              <div className="success-message-split">
-                <MessageCircle size={18} />
-                <span>Message sent successfully! I'll get back to you soon. ✅</span>
+            <form onSubmit={onSubmit} className="split-form">
+              <div className="split-form-group">
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  placeholder=" "
+                />
+                <label htmlFor="name">Your Name</label>
               </div>
-            )}
 
-            {submitStatus === "error" && (
-              <div className="error-message-split">
-                <MessageCircle size={18} />
-                <span>{errorMessage}</span>
+              <div className="split-form-group">
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  placeholder=" "
+                />
+                <label htmlFor="email">Email Address</label>
               </div>
-            )}
-          </form>
+
+              <div className="split-form-group">
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  placeholder=" "
+                  rows="3"
+                />
+                <label htmlFor="message">Your Message</label>
+              </div>
+
+              {/* Hidden fields for Formspree */}
+              <input type="hidden" name="_replyto" value={formData.email} />
+              <input type="hidden" name="_subject" value={`New message from ${formData.name}`} />
+
+              <motion.button
+                type="submit"
+                className="split-submit-btn"
+                disabled={state.submitting}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                {state.submitting ? (
+                  <span className="sending">Sending...</span>
+                ) : (
+                  <>
+                    Send Message <Send size={16} />
+                  </>
+                )}
+              </motion.button>
+
+              {submitStatus === "success" && (
+                <motion.div
+                  className="success-message-split"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <MessageCircle size={18} />
+                  <span className="span-message-succ">
+                    Message sent successfully! I'll get back to you soon. ✅
+                  </span>
+                </motion.div>
+              )}
+
+              {submitStatus === "error" && (
+                <motion.div
+                  className="error-message-split"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <MessageCircle size={18} />
+                  <span>{errorMessage}</span>
+                </motion.div>
+              )}
+            </form>
+          </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* FOOTER */}
-      <footer className="footer-main">
-        <div className="footer-bottom">
-          © 2026 BOSSONY Khadija — Built with <Heart size={12} /> <Code2 size={12} />
-          <a href="/CVPortfolio.pdf" download>
-            Download CV <ExternalLink size={12} />
+      <Footer scrollToSection={scrollToSection} />
+    </div>
+  );
+};
+
+// Separate Footer Component for reusability
+const Footer = ({ scrollToSection }) => (
+  <footer className="footer-main">
+    <div className="footer-gradient-line" />
+
+    <div className="footer-inner">
+      <motion.div
+        className="footer-brand"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <span className="footer-logo">BK</span>
+        <div>
+          <p className="footer-name">BOSSONY Khadija</p>
+          <p className="footer-tagline">AI & Big Data Engineering</p>
+        </div>
+      </motion.div>
+
+      <motion.nav
+        className="footer-nav"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <a onClick={() => scrollToSection('experience')} className="footer-nav-link" style={{ cursor: 'pointer' }}>
+          Experience
+        </a>
+        <a onClick={() => scrollToSection('education')} className="footer-nav-link" style={{ cursor: 'pointer' }}>
+          Education
+        </a>
+        <a onClick={() => scrollToSection('skills')} className="footer-nav-link" style={{ cursor: 'pointer' }}>
+          Skills
+        </a>
+        <a onClick={() => scrollToSection('certifications')} className="footer-nav-link" style={{ cursor: 'pointer' }}>
+          Certifications
+        </a>
+        <Link to="/Contact" className="footer-nav-link">
+          Contact
+        </Link>
+      </motion.nav>
+
+      <motion.div
+        className="footer-right"
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <div className="footer-socials">
+          <a href="https://github.com/indexkboss" target="_blank" rel="noopener noreferrer" className="footer-social-btn">
+            <Github size={18} />
+          </a>
+          <a href="https://linkedin.com/in/khadijabossony" target="_blank" rel="noopener noreferrer" className="footer-social-btn">
+            <Linkedin size={18} />
+          </a>
+          <a href="mailto:bossonykhadijae@gmail.com" className="footer-social-btn">
+            <Mail size={18} />
           </a>
         </div>
 
         <button
+          className="footer-top-btn"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           <ArrowUp size={16} />
         </button>
-      </footer>
+      </motion.div>
     </div>
-  );
-};
+
+    <div className="footer-bottom">
+      <span className="footer-copy">
+        © 2026 BOSSONY Khadija — Built with <Heart size={12} className="footer-heart" /> and{" "}
+        <Code2 size={12} className="footer-code" />
+      </span>
+      <a href="/CVPortfolio.pdf" download className="footer-cv-link">
+        Download CV <ExternalLink size={12} />
+      </a>
+    </div>
+  </footer>
+);
 
 export default Contact;
