@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import {
   Mail,
   Phone,
@@ -14,14 +13,21 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-// Import Formspree hook instead of emailjs
+// Import Formspree hook
 import { useForm } from "@formspree/react";
 import "./Contact.css";
 import Navbar from "../components/Navbar";
 
 const Contact = () => {
-  // Formspree hook - replace with your actual form ID
-  const [state, handleSubmit] = useForm(import.meta.env.VITE_REACT_APP_FORMSPREE_ID);  
+  // Debug: Log to see if env variable is loading
+  console.log("Env variable:", import.meta.env.VITE_FORMSPREE_ID);
+  
+  // Get Formspree ID from env
+  const formspreeId = import.meta.env.VITE_FORMSPREE_ID;
+  
+  // Check if ID exists, otherwise use a fallback for testing
+  const [state, handleSubmit] = useForm(formspreeId || "mzdaqoer");
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -30,6 +36,19 @@ const Contact = () => {
 
   const [submitStatus, setSubmitStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [configError, setConfigError] = useState(false);
+
+  // Check for configuration errors on mount
+  useEffect(() => {
+    if (!formspreeId) {
+      console.error("Formspree ID is missing! Check your .env file.");
+      console.log("Make sure you have: VITE_FORMSPREE_ID=your_id_here");
+      setConfigError(true);
+      setErrorMessage("Contact form configuration error. Please try again later.");
+    } else {
+      console.log("Formspree ID loaded successfully:", formspreeId);
+    }
+  }, []);
 
   /* ======================
      INPUT CHANGE
@@ -69,8 +88,13 @@ const Contact = () => {
       return;
     }
 
-    // Let Formspree handle the submission
-    await handleSubmit(e);
+    try {
+      await handleSubmit(e);
+    } catch (error) {
+      console.error("Submit error:", error);
+      setErrorMessage("Failed to send message. Please try again.");
+      setSubmitStatus("error");
+    }
   };
 
   /* ======================
@@ -89,10 +113,11 @@ const Contact = () => {
     if (state.errors) {
       console.error("Formspree errors:", state.errors);
       
-      // Extract error messages from Formspree
       let message = "Something went wrong while sending your message.";
       
-      if (state.errors.getFormErrors) {
+      if (state.errors.response?.data?.error) {
+        message = state.errors.response.data.error;
+      } else if (state.errors.getFormErrors) {
         const formErrors = state.errors.getFormErrors();
         if (formErrors.length > 0) {
           message = formErrors[0].message;
@@ -143,6 +168,57 @@ const Contact = () => {
     },
   ];
 
+  // Show error state if configuration is missing
+  if (configError) {
+    return (
+      <div className="contact-page-new">
+        <Navbar />
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '50px 20px',
+          minHeight: '60vh',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <h2 style={{ color: '#ff6b6b', marginBottom: '20px' }}>
+            Contact Form Temporarily Unavailable
+          </h2>
+          <p style={{ marginBottom: '30px', fontSize: '1.1rem' }}>
+            Please email me directly at:
+          </p>
+          <a 
+            href="mailto:bossonykhadijae@gmail.com"
+            style={{
+              display: 'inline-block',
+              padding: '12px 30px',
+              background: '#007bff',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '25px',
+              fontSize: '1.1rem',
+              transition: 'all 0.3s ease'
+            }}
+          >
+            bossonykhadijae@gmail.com
+          </a>
+        </div>
+        <footer className="footer-main">
+          <div className="footer-bottom">
+            © 2026 BOSSONY Khadija — Built with <Heart size={12} /> <Code2 size={12} />
+            <a href="/CVPortfolio.pdf" download>
+              Download CV <ExternalLink size={12} />
+            </a>
+          </div>
+          <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+            <ArrowUp size={16} />
+          </button>
+        </footer>
+      </div>
+    );
+  }
+
   return (
     <div className="contact-page-new">
       <Navbar />
@@ -189,7 +265,6 @@ const Contact = () => {
             )}
           </div>
           
-          {/* Add a helpful tip for users */}
           <div className="troubleshoot-tip">
             <small>
               ⚡ Having trouble? Formspree works with ad blockers! 
@@ -230,14 +305,12 @@ const Contact = () => {
               required
             />
 
-            {/* Hidden field for better email replies [citation:4] */}
             <input
               type="hidden"
               name="_replyto"
               value={formData.email}
             />
             
-            {/* Hidden field for custom subject [citation:4] */}
             <input
               type="hidden"
               name="_subject"
@@ -253,7 +326,6 @@ const Contact = () => {
               <Send size={16} />
             </motion.button>
 
-            {/* SUCCESS */}
             {submitStatus === "success" && (
               <div className="success-message-split">
                 <MessageCircle size={18} />
@@ -261,7 +333,6 @@ const Contact = () => {
               </div>
             )}
 
-            {/* ERROR */}
             {submitStatus === "error" && (
               <div className="error-message-split">
                 <MessageCircle size={18} />
