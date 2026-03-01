@@ -41,6 +41,8 @@ body {
   font-weight: 900;
   letter-spacing: -2px;
   background: linear-gradient(135deg, #ffffff, #bdbdfd, #ff006e);
+  /* Standard property */
+  background-clip: text; /**/
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 10px;

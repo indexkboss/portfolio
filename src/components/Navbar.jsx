@@ -1,18 +1,18 @@
-import { Link, useLocation } from "react-router-dom";
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/themeContext'; // Import useTheme
 import "./Navbar.css";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme(); // Use theme context
   const location = useLocation();
-
-  // Remove the local useState and useEffect for theme
+  const navigate = useNavigate();
 
   // Handle smooth scroll to section
   const scrollToSection = (sectionId) => {
     if (location.pathname !== '/') {
-      window.location.href = `/#${sectionId}`;
+      navigate("/", { state: { sectionId } });
       return;
     }
     const element = document.getElementById(sectionId);
@@ -26,12 +26,13 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="logo" >
+      {/* <Link to="/" className="logo" >
         &lt;Khadija/&gt;
+      </Link> */}
+      <Link to="/" className="logo" >
+        &lt;welcome/&gt;
       </Link>
-
       <div className="nav-links">
-        <Link to="/">Home</Link>
         <Link to="/projects">Projects</Link>
 
         <div className="dropdown">

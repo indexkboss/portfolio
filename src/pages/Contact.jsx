@@ -30,6 +30,7 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [debugInfo, setDebugInfo] = useState("");
 
   /* ======================
      INPUT CHANGE
@@ -42,6 +43,47 @@ const Contact = () => {
   };
 
   /* ======================
+     TEST CONNECTION HELPER
+  ====================== */
+  const testConnection = async () => {
+    try {
+      // Try to ping EmailJS
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
+      const response = await fetch('https://api.emailjs.com/api/v1.0/test', { 
+        method: 'HEAD',
+        mode: 'no-cors',
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
+      return { success: true, message: "EmailJS is reachable" };
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        return { success: false, message: "Connection timeout - network may be slow" };
+      }
+      return { success: false, message: "Connection blocked - possible ad blocker or firewall" };
+    }
+  };
+
+  /* ======================
+     CHECK BROWSER INFO
+  ====================== */
+  const getBrowserInfo = () => {
+    const ua = navigator.userAgent;
+    let browser = "Unknown";
+    
+    if (ua.indexOf("Chrome") > -1) browser = "Chrome";
+    if (ua.indexOf("Firefox") > -1) browser = "Firefox";
+    if (ua.indexOf("Safari") > -1) browser = "Safari";
+    if (ua.indexOf("Edg") > -1) browser = "Edge";
+    if (ua.indexOf("Brave") > -1) browser = "Brave";
+    
+    return browser;
+  };
+
+  /* ======================
      FORM SUBMIT
   ====================== */
   const handleSubmit = async (e) => {
@@ -49,6 +91,7 @@ const Contact = () => {
 
     setSubmitStatus(null);
     setErrorMessage("");
+    setDebugInfo("");
 
     /* ---------- VALIDATION ---------- */
     if (!formData.name.trim()) {
@@ -74,6 +117,20 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
+      // First, test connection for debugging
+      const connectionTest = await testConnection();
+      
+      // Check online status
+      if (!navigator.onLine) {
+        throw new Error("offline");
+      }
+
+      // Check for common blockers
+      const browser = getBrowserInfo();
+      if (browser === "Brave") {
+        console.log("Brave browser detected - may need to disable shields");
+      }
+
       const result = await emailjs.sendForm(
         import.meta.env.VITE_serviceId,
         import.meta.env.VITE_templateId,
@@ -81,7 +138,7 @@ const Contact = () => {
         import.meta.env.VITE_publicKey
       );
 
-      console.log("Email sent:", result);
+      console.log("Email sent successfully:", result);
 
       setSubmitStatus("success");
 
@@ -90,58 +147,93 @@ const Contact = () => {
         email: "",
         message: "",
       });
+      
+      setDebugInfo(""); // Clear any debug info on success
+      
     } catch (error) {
-      console.error("EmailJS ERROR:", error);
+      console.error("EmailJS ERROR - Full details:", error);
+      console.error("Error type:", error.name);
+      console.error("Error message:", error.message);
+      console.error("Error status:", error.status);
+      console.error("Error text:", error.text);
 
-      let message =
-        "Something went wrong while sending your message.";
+      let message = "Something went wrong while sending your message.";
+      let suggestions = "";
 
-      /* ===== SMART ERROR DETECTION ===== */
+      /* ===== ENHANCED ERROR DETECTION ===== */
 
-      if (!navigator.onLine) {
-        message =
-          "No internet connection detected.";
+      // Check for ad blockers / privacy extensions (most likely for single user)
+      if (error.message === "Failed to fetch" || 
+          error.name === "TypeError" ||
+          error.message?.includes("NetworkError") ||
+          error.message?.includes("Network request failed")) {
+        
+        message = "📵 Request blocked by your browser or extensions.";
+        suggestions = `
+          Please try these solutions:
+          • Disable ad blockers (uBlock, AdBlock, etc.)
+          • Disable Brave Shields if using Brave browser
+          • Turn off VPN or proxy temporarily
+          • Try Chrome or Edge browser
+          • Disable tracking protection (in Safari/Firefox)
+          • Add exception for emailjs.com in your extensions
+        `;
       }
-
-      else if (
-        error?.message === "Failed to fetch"
-      ) {
-        message =
-          "Request blocked by browser or network. Disable AdBlock/Brave Shields or try another browser.";
+      
+      // Check for network connectivity
+      else if (!navigator.onLine) {
+        message = "📶 No internet connection detected.";
+        suggestions = "Please check your WiFi or mobile data and try again.";
       }
-
+      
+      // Check for CORS issues
+      else if (error.message?.includes("CORS")) {
+        message = "🌐 CORS policy blocked the request.";
+        suggestions = "This is usually caused by extensions. Try incognito mode or a different browser.";
+      }
+      
+      // Check for rate limiting
       else if (error?.status === 429) {
-        message =
-          "Too many requests. Please wait a moment before trying again.";
+        message = "⏳ Too many requests.";
+        suggestions = "Please wait a moment before trying again.";
       }
-
-      else if (
-        error?.text?.includes("Invalid service")
-      ) {
-        message =
-          "Email service configuration error.";
+      
+      // Check for service configuration issues
+      else if (error?.text?.includes("Invalid service") || 
+               error?.text?.includes("Invalid template") ||
+               error?.text?.includes("Public Key")) {
+        message = "⚙️ Service configuration error.";
+        suggestions = "Please contact the website owner.";
       }
-
-      else if (
-        error?.text?.includes("Invalid template")
-      ) {
-        message =
-          "Email template configuration error.";
-      }
-
-      else if (
-        error?.text?.includes("Public Key")
-      ) {
-        message =
-          "Authentication failed. Contact form temporarily unavailable.";
-      }
-
+      
+      // Generic error with text
       else if (error?.text) {
-        message = error.text;
+        message = `Server response: ${error.text}`;
+        try {
+          const errorData = JSON.parse(error.text);
+          if (errorData.error) {
+            message = errorData.error;
+          }
+        } catch {
+          // Not JSON, use as is
+        }
       }
+
+      // Add browser and connection info for debugging
+      const browserInfo = getBrowserInfo();
+      const connectionType = navigator.connection?.effectiveType || "unknown";
+      const debugDetails = `
+        Browser: ${browserInfo}
+        Online: ${navigator.onLine ? "Yes" : "No"}
+        Connection: ${connectionType}
+        Error Type: ${error.name || "N/A"}
+        Status: ${error.status || "N/A"}
+      `;
 
       setErrorMessage(message);
+      setDebugInfo(suggestions || debugDetails);
       setSubmitStatus("error");
+      
     } finally {
       setIsSubmitting(false);
     }
@@ -154,7 +246,8 @@ const Contact = () => {
     if (submitStatus) {
       const timer = setTimeout(() => {
         setSubmitStatus(null);
-      }, 6000);
+        setDebugInfo(""); // Clear debug info when hiding alert
+      }, 8000); // Extended to 8 seconds to show suggestions
 
       return () => clearTimeout(timer);
     }
@@ -233,6 +326,19 @@ const Contact = () => {
               )
             )}
           </div>
+
+          {/* Quick troubleshooting guide for users */}
+          <div className="troubleshoot-tip">
+            <small>
+              ⚡ Having trouble? Try:
+              <br />
+              • Disable ad blocker
+              <br />
+              • Use Chrome/Edge
+              <br />
+              • Turn off VPN
+            </small>
+          </div>
         </div>
 
         {/* FORM */}
@@ -294,16 +400,29 @@ const Contact = () => {
               <div className="success-message-split">
                 <MessageCircle size={18} />
                 <span>
-                  Message sent successfully ✅
+                  Message sent successfully! I'll get back to you soon. ✅
                 </span>
               </div>
             )}
 
-            {/* ERROR */}
+            {/* ERROR - Enhanced with suggestions */}
             {submitStatus === "error" && (
               <div className="error-message-split">
                 <MessageCircle size={18} />
-                <span>{errorMessage}</span>
+                <div className="error-content">
+                  <strong>{errorMessage}</strong>
+                  {debugInfo && (
+                    <div className="error-suggestions">
+                      <small>{debugInfo}</small>
+                    </div>
+                  )}
+                  <button 
+                    className="retry-btn"
+                    onClick={() => setSubmitStatus(null)}
+                  >
+                    Try Again
+                  </button>
+                </div>
               </div>
             )}
           </form>

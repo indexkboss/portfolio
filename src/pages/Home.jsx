@@ -15,6 +15,8 @@ import { websiteDemosData } from "../data/websiteDemosData";
 import { allCertificatesData } from "../data/allCertificatesData";
 import { Link } from "react-router-dom";
 import {  Github, Linkedin, Mail, ArrowUp, Code2, Heart } from 'lucide-react';
+import { useLocation } from "react-router-dom";
+
 
 const Home = () => {
   const [text] = useTypewriter({
@@ -174,7 +176,28 @@ useEffect(() => {
     setDirection(1);
     setCurrentDemoIndex((prev) => (prev + 1) % websiteDemosData.length);
   };
+//fixing the navigation through the overview elements :
+const location = useLocation();
+useEffect(() => {
+  if (!location.state?.sectionId) return;
 
+  const sectionId = location.state.sectionId;
+
+  const scrollToTarget = () => {
+    const element = document.getElementById(sectionId);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    } else {
+      requestAnimationFrame(scrollToTarget);
+    }
+  };
+
+  scrollToTarget();
+}, [location]);
   const renderDemoWebsite = (demo) => (
     <motion.div
       key={demo.title}

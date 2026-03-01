@@ -28,6 +28,8 @@
   font-weight: 800;
   margin-bottom: 0.3rem;
   background: linear-gradient(135deg, #fff, #bdbdfd, #ff006e);
+  /* Standard property */
+  background-clip: text;  /*added*/
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -825,4 +827,57 @@ body.light-mode .footer-nav-link:hover {
 }
 .footer-bottom{
   padding-bottom: 80px;
+}
+
+
+/**/
+/* Add to Contact.css */
+.error-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.error-suggestions {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  white-space: pre-line;
+  color: #fff;
+  margin: 5px 0;
+}
+
+.retry-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+}
+
+.retry-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.troubleshoot-tip {
+  margin-top: 20px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid #ff6b6b;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.troubleshoot-tip small {
+  display: block;
+  line-height: 1.6;
 }
