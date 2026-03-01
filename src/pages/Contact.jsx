@@ -14,23 +14,22 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-import emailjs from "@emailjs/browser";
+// Import Formspree hook instead of emailjs
+import { useForm } from "@formspree/react";
 import "./Contact.css";
 import Navbar from "../components/Navbar";
 
 const Contact = () => {
-  const formRef = useRef();
-
+  // Formspree hook - replace with your actual form ID
+  const [state, handleSubmit] = useForm(import.meta.env.VITE_REACT_APP_FORMSPREE_ID);  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [debugInfo, setDebugInfo] = useState("");
 
   /* ======================
      INPUT CHANGE
@@ -43,55 +42,13 @@ const Contact = () => {
   };
 
   /* ======================
-     TEST CONNECTION HELPER
-  ====================== */
-  const testConnection = async () => {
-    try {
-      // Try to ping EmailJS
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
-      
-      const response = await fetch('https://api.emailjs.com/api/v1.0/test', { 
-        method: 'HEAD',
-        mode: 'no-cors',
-        signal: controller.signal
-      });
-      
-      clearTimeout(timeoutId);
-      return { success: true, message: "EmailJS is reachable" };
-    } catch (error) {
-      if (error.name === 'AbortError') {
-        return { success: false, message: "Connection timeout - network may be slow" };
-      }
-      return { success: false, message: "Connection blocked - possible ad blocker or firewall" };
-    }
-  };
-
-  /* ======================
-     CHECK BROWSER INFO
-  ====================== */
-  const getBrowserInfo = () => {
-    const ua = navigator.userAgent;
-    let browser = "Unknown";
-    
-    if (ua.indexOf("Chrome") > -1) browser = "Chrome";
-    if (ua.indexOf("Firefox") > -1) browser = "Firefox";
-    if (ua.indexOf("Safari") > -1) browser = "Safari";
-    if (ua.indexOf("Edg") > -1) browser = "Edge";
-    if (ua.indexOf("Brave") > -1) browser = "Brave";
-    
-    return browser;
-  };
-
-  /* ======================
      FORM SUBMIT
   ====================== */
-  const handleSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     setSubmitStatus(null);
     setErrorMessage("");
-    setDebugInfo("");
 
     /* ---------- VALIDATION ---------- */
     if (!formData.name.trim()) {
@@ -107,137 +64,45 @@ const Contact = () => {
     }
 
     if (formData.message.trim().length < 10) {
-      setErrorMessage(
-        "Message must contain at least 10 characters."
-      );
+      setErrorMessage("Message must contain at least 10 characters.");
       setSubmitStatus("error");
       return;
     }
 
-    setIsSubmitting(true);
+    // Let Formspree handle the submission
+    await handleSubmit(e);
+  };
 
-    try {
-      // First, test connection for debugging
-      const connectionTest = await testConnection();
-      
-      // Check online status
-      if (!navigator.onLine) {
-        throw new Error("offline");
-      }
-
-      // Check for common blockers
-      const browser = getBrowserInfo();
-      if (browser === "Brave") {
-        console.log("Brave browser detected - may need to disable shields");
-      }
-
-      const result = await emailjs.sendForm(
-        import.meta.env.VITE_serviceId,
-        import.meta.env.VITE_templateId,
-        formRef.current,
-        import.meta.env.VITE_publicKey
-      );
-
-      console.log("Email sent successfully:", result);
-
+  /* ======================
+     HANDLE FORMSPREE STATE CHANGES
+  ====================== */
+  useEffect(() => {
+    if (state.succeeded) {
       setSubmitStatus("success");
-
       setFormData({
         name: "",
         email: "",
         message: "",
       });
+    }
+    
+    if (state.errors) {
+      console.error("Formspree errors:", state.errors);
       
-      setDebugInfo(""); // Clear any debug info on success
-      
-    } catch (error) {
-      console.error("EmailJS ERROR - Full details:", error);
-      console.error("Error type:", error.name);
-      console.error("Error message:", error.message);
-      console.error("Error status:", error.status);
-      console.error("Error text:", error.text);
-
+      // Extract error messages from Formspree
       let message = "Something went wrong while sending your message.";
-      let suggestions = "";
-
-      /* ===== ENHANCED ERROR DETECTION ===== */
-
-      // Check for ad blockers / privacy extensions (most likely for single user)
-      if (error.message === "Failed to fetch" || 
-          error.name === "TypeError" ||
-          error.message?.includes("NetworkError") ||
-          error.message?.includes("Network request failed")) {
-        
-        message = "📵 Request blocked by your browser or extensions.";
-        suggestions = `
-          Please try these solutions:
-          • Disable ad blockers (uBlock, AdBlock, etc.)
-          • Disable Brave Shields if using Brave browser
-          • Turn off VPN or proxy temporarily
-          • Try Chrome or Edge browser
-          • Disable tracking protection (in Safari/Firefox)
-          • Add exception for emailjs.com in your extensions
-        `;
-      }
       
-      // Check for network connectivity
-      else if (!navigator.onLine) {
-        message = "📶 No internet connection detected.";
-        suggestions = "Please check your WiFi or mobile data and try again.";
-      }
-      
-      // Check for CORS issues
-      else if (error.message?.includes("CORS")) {
-        message = "🌐 CORS policy blocked the request.";
-        suggestions = "This is usually caused by extensions. Try incognito mode or a different browser.";
-      }
-      
-      // Check for rate limiting
-      else if (error?.status === 429) {
-        message = "⏳ Too many requests.";
-        suggestions = "Please wait a moment before trying again.";
-      }
-      
-      // Check for service configuration issues
-      else if (error?.text?.includes("Invalid service") || 
-               error?.text?.includes("Invalid template") ||
-               error?.text?.includes("Public Key")) {
-        message = "⚙️ Service configuration error.";
-        suggestions = "Please contact the website owner.";
-      }
-      
-      // Generic error with text
-      else if (error?.text) {
-        message = `Server response: ${error.text}`;
-        try {
-          const errorData = JSON.parse(error.text);
-          if (errorData.error) {
-            message = errorData.error;
-          }
-        } catch {
-          // Not JSON, use as is
+      if (state.errors.getFormErrors) {
+        const formErrors = state.errors.getFormErrors();
+        if (formErrors.length > 0) {
+          message = formErrors[0].message;
         }
       }
-
-      // Add browser and connection info for debugging
-      const browserInfo = getBrowserInfo();
-      const connectionType = navigator.connection?.effectiveType || "unknown";
-      const debugDetails = `
-        Browser: ${browserInfo}
-        Online: ${navigator.onLine ? "Yes" : "No"}
-        Connection: ${connectionType}
-        Error Type: ${error.name || "N/A"}
-        Status: ${error.status || "N/A"}
-      `;
-
-      setErrorMessage(message);
-      setDebugInfo(suggestions || debugDetails);
-      setSubmitStatus("error");
       
-    } finally {
-      setIsSubmitting(false);
+      setErrorMessage(message);
+      setSubmitStatus("error");
     }
-  };
+  }, [state.succeeded, state.errors]);
 
   /* ======================
      AUTO HIDE ALERT
@@ -246,8 +111,7 @@ const Contact = () => {
     if (submitStatus) {
       const timer = setTimeout(() => {
         setSubmitStatus(null);
-        setDebugInfo(""); // Clear debug info when hiding alert
-      }, 8000); // Extended to 8 seconds to show suggestions
+      }, 6000);
 
       return () => clearTimeout(timer);
     }
@@ -275,8 +139,7 @@ const Contact = () => {
     {
       icon: <Phone size={22} />,
       label: "Phone",
-      onClick: () =>
-        (window.location.href = "tel:+212679101440"),
+      onClick: () => (window.location.href = "tel:+212679101440"),
     },
   ];
 
@@ -296,7 +159,6 @@ const Contact = () => {
 
       {/* CARD */}
       <div className="split-card">
-
         {/* LEFT */}
         <div className="split-card-left">
           <h3>Connect With Me</h3>
@@ -326,17 +188,12 @@ const Contact = () => {
               )
             )}
           </div>
-
-          {/* Quick troubleshooting guide for users */}
+          
+          {/* Add a helpful tip for users */}
           <div className="troubleshoot-tip">
             <small>
-              ⚡ Having trouble? Try:
-              <br />
-              • Disable ad blocker
-              <br />
-              • Use Chrome/Edge
-              <br />
-              • Turn off VPN
+              ⚡ Having trouble? Formspree works with ad blockers! 
+              Just make sure JavaScript is enabled.
             </small>
           </div>
         </div>
@@ -345,11 +202,7 @@ const Contact = () => {
         <div className="split-card-right">
           <h3>Send a Message</h3>
 
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            className="split-form"
-          >
+          <form onSubmit={onSubmit} className="split-form">
             <input
               type="text"
               name="name"
@@ -377,21 +230,26 @@ const Contact = () => {
               required
             />
 
-            {/* hidden time */}
+            {/* Hidden field for better email replies [citation:4] */}
             <input
               type="hidden"
-              name="time"
-              value={new Date().toLocaleString()}
+              name="_replyto"
+              value={formData.email}
+            />
+            
+            {/* Hidden field for custom subject [citation:4] */}
+            <input
+              type="hidden"
+              name="_subject"
+              value={`New message from ${formData.name}`}
             />
 
             <motion.button
               type="submit"
-              disabled={isSubmitting}
+              disabled={state.submitting}
               className="split-submit-btn"
             >
-              {isSubmitting
-                ? "Sending..."
-                : "Send Message"}
+              {state.submitting ? "Sending..." : "Send Message"}
               <Send size={16} />
             </motion.button>
 
@@ -399,30 +257,15 @@ const Contact = () => {
             {submitStatus === "success" && (
               <div className="success-message-split">
                 <MessageCircle size={18} />
-                <span>
-                  Message sent successfully! I'll get back to you soon. ✅
-                </span>
+                <span>Message sent successfully! I'll get back to you soon. ✅</span>
               </div>
             )}
 
-            {/* ERROR - Enhanced with suggestions */}
+            {/* ERROR */}
             {submitStatus === "error" && (
               <div className="error-message-split">
                 <MessageCircle size={18} />
-                <div className="error-content">
-                  <strong>{errorMessage}</strong>
-                  {debugInfo && (
-                    <div className="error-suggestions">
-                      <small>{debugInfo}</small>
-                    </div>
-                  )}
-                  <button 
-                    className="retry-btn"
-                    onClick={() => setSubmitStatus(null)}
-                  >
-                    Try Again
-                  </button>
-                </div>
+                <span>{errorMessage}</span>
               </div>
             )}
           </form>
@@ -432,21 +275,14 @@ const Contact = () => {
       {/* FOOTER */}
       <footer className="footer-main">
         <div className="footer-bottom">
-          © 2026 BOSSONY Khadija — Built with{" "}
-          <Heart size={12} /> <Code2 size={12} />
-
+          © 2026 BOSSONY Khadija — Built with <Heart size={12} /> <Code2 size={12} />
           <a href="/CVPortfolio.pdf" download>
             Download CV <ExternalLink size={12} />
           </a>
         </div>
 
         <button
-          onClick={() =>
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            })
-          }
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           <ArrowUp size={16} />
         </button>
