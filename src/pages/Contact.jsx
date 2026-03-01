@@ -306,13 +306,7 @@ const Contact = () => {
                 )
               )}
             </div>
-            
-            <div className="troubleshoot-tip">
-              <small>
-                ⚡ Having trouble? Formspree works with ad blockers! 
-                Just make sure JavaScript is enabled.
-              </small>
-            </div>
+
           </div>
 
           {/* RIGHT SIDE - FORM */}
