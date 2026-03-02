@@ -285,7 +285,6 @@ text-decoration: 'none'
 }
 
 
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Libre+Baskerville&display=swap');
 
 .navbar {
   position: fixed;
@@ -612,11 +611,32 @@ body.light-mode .navbar-logo {
   color: #0b0d10 !important;
 }
 
+body.light-mode .mobile-menu-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color:var(--bg-soft);/**/
+  color: #e2e8f0;
+
+  border-width: 0.1px;
+  border-style: solid;   /* ← missing */
+  border-color: #c0c1c3;
+
+}
+
+
 .mobile-menu-content {
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background-color:var(--bg-soft);
+  background-color:var(--bg-soft);/**/
   color: #e2e8f0;
+
+  border-width: 0.1px;
+  border-style: solid;   /* ← missing */
+  border-color: #24272a;
+
 }
+
