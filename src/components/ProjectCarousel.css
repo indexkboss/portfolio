@@ -671,3 +671,44 @@ div.carousel-wrapper {
 .carousel-item.active {
   z-index: 100;
 }
+/* Add at the end of ProjectCarousel.css */
+
+/* Fix for modal close button on small screens */
+@media (max-width: 768px) {
+  .project-modal-content {
+    padding-top: 60px !important; /* Height of your navbar */
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  /* Ensure the close button stays at the top and is always clickable */
+  .modal-close-btn {
+    position: fixed;
+    top: 70px; /* Position below navbar */
+    right: 20px;
+    z-index: 1000001; /* Above everything */
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Dark mode support */
+  body.light-mode .modal-close-btn {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+  }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+  .project-modal-content {
+    padding-top: 70px !important;
+  }
+  
+  .modal-close-btn {
+    top: 75px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    font-size: 1.3rem;
+  }
+}
