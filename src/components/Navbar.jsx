@@ -34,19 +34,30 @@ const Navbar = () => {
   }, [isMenuOpen]);
 
   const scrollToSection = (sectionId) => {
+    // Close mobile menu first
+    setIsMenuOpen(false);
+    
     if (location.pathname !== '/') {
+      // If not on home page, navigate to home with state
       navigate("/", { state: { sectionId } });
-      setIsMenuOpen(false);
       return;
     }
+    
+    // If on home page, scroll to section
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      });
+      // Add a small delay to ensure the menu is closed
+      setTimeout(() => {
+        const navbarHeight = 80; // Height of your fixed navbar
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - navbarHeight;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }, 100);
     }
-    setIsMenuOpen(false);
   };
 
   const closeMenu = () => setIsMenuOpen(false);

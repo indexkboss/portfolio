@@ -20,6 +20,5 @@ export const experiencesData = [
     type: "Full-Time",
     status: "past",
     verified: true,
-    featured: true,
   },
 ];
