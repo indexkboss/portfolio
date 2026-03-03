@@ -18,22 +18,53 @@ const ProjectCarousel = ({ projects, category }) => {
     if (isModalOpen) {
       // Save current scroll position
       const scrollY = window.scrollY;
+      
       // Add styles to body to prevent scrolling
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
       document.body.style.width = '100%';
-      document.body.style.overflowY = 'scroll'; // Maintain scrollbar width to prevent layout shift
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100vh';
+      
+      // Add modal-open class
+      document.body.classList.add('modal-open');
+      
+      // Prevent touch events on background
+      document.body.style.touchAction = 'none';
     } else {
       // Restore scroll position when modal closes
       const scrollY = document.body.style.top;
       document.body.style.position = '';
       document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
       document.body.style.width = '';
-      document.body.style.overflowY = '';
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+      document.body.style.touchAction = '';
+      
+      // Remove modal-open class
+      document.body.classList.remove('modal-open');
+      
       if (scrollY) {
         window.scrollTo(0, parseInt(scrollY || '0') * -1);
       }
     }
+    
+    // Cleanup function
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+      document.body.style.touchAction = '';
+      document.body.classList.remove('modal-open');
+    };
   }, [isModalOpen]);
 
   useEffect(() => {
@@ -95,19 +126,14 @@ const ProjectCarousel = ({ projects, category }) => {
     return normalizedDiff;
   };
 
-  if (!projects || projects.length === 0) {
-    return <div className="no-projects">No projects in this category</div>;
-  }
-
   // Mobile-specific animation values
   const getMobileAnimation = (position) => {
-    const isActive = position === 0;
     return {
-      x: position * (isMobile ? 200 : 320), // Smaller offset on mobile
+      x: position * (isMobile ? 200 : 320),
       y: Math.abs(position) * (isMobile ? 15 : 20),
       scale: Math.max(0.6, 1 - Math.abs(position) * 0.12),
       opacity: Math.abs(position) > 2 ? 0 : Math.max(0.3, 1 - Math.abs(position) * 0.25),
-      rotateY: position * (isMobile ? -8 : -12), // Less rotation on mobile
+      rotateY: position * (isMobile ? -8 : -12),
       rotateX: Math.abs(position) * (isMobile ? 2 : 3),
       filter: `blur(${Math.abs(position) * (isMobile ? 1 : 2)}px)`,
       zIndex: 100 - Math.abs(position) * 10
@@ -128,6 +154,10 @@ const ProjectCarousel = ({ projects, category }) => {
     };
   };
 
+  if (!projects || projects.length === 0) {
+    return <div className="no-projects">No projects in this category</div>;
+  }
+
   return (
     <div className="carousel-wrapper" ref={carouselRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className="carousel-header">
@@ -147,7 +177,6 @@ const ProjectCarousel = ({ projects, category }) => {
             const position = getPosition(index);
             const isActive = index === currentIndex;
             
-            // Use different animations for mobile vs desktop
             const animation = isMobile ? getMobileAnimation(position) : getDesktopAnimation(position);
             
             return (
@@ -166,6 +195,7 @@ const ProjectCarousel = ({ projects, category }) => {
                   marginTop: isMobile ? '-190px' : '-225px',
                   transformOrigin: 'center center',
                   cursor: 'pointer',
+                  zIndex: isActive ? 100 : 1,
                 }}
                 onClick={() => goToSlide(index)}
               >
@@ -218,6 +248,14 @@ const ProjectCarousel = ({ projects, category }) => {
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }} 
             onClick={closeProjectModal}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 999999,
+            }}
           >
             <motion.div 
               className="project-modal-content" 
@@ -226,6 +264,10 @@ const ProjectCarousel = ({ projects, category }) => {
               exit={{ scale: 0.8, opacity: 0, y: 50 }} 
               transition={{ type: "spring", damping: 25, stiffness: 200 }} 
               onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'relative',
+                zIndex: 1000000,
+              }}
             >
               <button className="modal-close-btn" onClick={closeProjectModal}>×</button>
               <div className="modal-header">
