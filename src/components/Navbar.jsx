@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sun, Moon, Menu, X, Home, Folder, Mail } from 'lucide-react';
 import { useTheme } from '../context/themeContext';
 import "./Navbar.css";
@@ -9,6 +9,29 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Add this effect to lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+      // Add styles to body to prevent scrolling
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflowY = 'scroll'; // Maintain scrollbar width to prevent layout shift
+    } else {
+      // Restore scroll position when menu closes
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+  }, [isMenuOpen]);
 
   const scrollToSection = (sectionId) => {
     if (location.pathname !== '/') {
@@ -27,6 +50,18 @@ const Navbar = () => {
   };
 
   const closeMenu = () => setIsMenuOpen(false);
+
+  // Handle escape key to close menu
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, [isMenuOpen]);
 
   return (
     <nav className="navbar">
@@ -65,6 +100,7 @@ const Navbar = () => {
         className="mobile-menu-btn"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-label="Toggle menu"
+        aria-expanded={isMenuOpen}
       >
         {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>

@@ -13,6 +13,29 @@ const ProjectCarousel = ({ projects, category }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const carouselRef = useRef(null);
 
+  // Add this effect to lock body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      // Save current scroll position
+      const scrollY = window.scrollY;
+      // Add styles to body to prevent scrolling
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflowY = 'scroll'; // Maintain scrollbar width to prevent layout shift
+    } else {
+      // Restore scroll position when modal closes
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+  }, [isModalOpen]);
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -189,11 +212,26 @@ const ProjectCarousel = ({ projects, category }) => {
 
       <AnimatePresence>
         {isModalOpen && selectedProject && (
-          <motion.div className="project-modal-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={closeProjectModal}>
-            <motion.div className="project-modal-content" initial={{ scale: 0.8, opacity: 0, y: 50 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.8, opacity: 0, y: 50 }} transition={{ type: "spring", damping: 25, stiffness: 200 }} onClick={(e) => e.stopPropagation()}>
+          <motion.div 
+            className="project-modal-overlay" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            onClick={closeProjectModal}
+          >
+            <motion.div 
+              className="project-modal-content" 
+              initial={{ scale: 0.8, opacity: 0, y: 50 }} 
+              animate={{ scale: 1, opacity: 1, y: 0 }} 
+              exit={{ scale: 0.8, opacity: 0, y: 50 }} 
+              transition={{ type: "spring", damping: 25, stiffness: 200 }} 
+              onClick={(e) => e.stopPropagation()}
+            >
               <button className="modal-close-btn" onClick={closeProjectModal}>×</button>
               <div className="modal-header">
-                <div className="modal-preview" style={{ background: selectedProject.bgGradient }}><span className="modal-icon">{selectedProject.icon}</span></div>
+                <div className="modal-preview" style={{ background: selectedProject.bgGradient }}>
+                  <span className="modal-icon">{selectedProject.icon}</span>
+                </div>
                 <div className="modal-title-section">
                   <h2>{selectedProject.title}</h2>
                   <div className="modal-category-badge">
@@ -210,16 +248,37 @@ const ProjectCarousel = ({ projects, category }) => {
                 <div className="modal-details">
                   <div className="modal-detail-section">
                     <h4>Technologies Used</h4>
-                    <div className="modal-tech-tags">{selectedProject.tech.map((tech, i) => (<span key={i} className="tech-tag">{tech}</span>))}</div>
+                    <div className="modal-tech-tags">
+                      {selectedProject.tech.map((tech, i) => (<span key={i} className="tech-tag">{tech}</span>))}
+                    </div>
                   </div>
                   <div className="modal-detail-section">
                     <h4>Features</h4>
-                    <ul className="modal-features"><li>Real-time data updates</li><li>Responsive design</li><li>Interactive UI elements</li><li>API integration</li></ul>
+                    <ul className="modal-features">
+                      <li>Real-time data updates</li>
+                      <li>Responsive design</li>
+                      <li>Interactive UI elements</li>
+                      <li>API integration</li>
+                    </ul>
                   </div>
                 </div>
                 <div className="modal-actions">
-                  <motion.a href="/projects" className="modal-btn primary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}><FaExternalLinkAlt /> Live Demo</motion.a>
-                  <motion.a href="/projects" className="modal-btn secondary" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}><FaGithub /> View Code</motion.a>
+                  <motion.a 
+                    href="/projects" 
+                    className="modal-btn primary" 
+                    whileHover={{ scale: 1.05 }} 
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FaExternalLinkAlt /> Live Demo
+                  </motion.a>
+                  <motion.a 
+                    href="/projects" 
+                    className="modal-btn secondary" 
+                    whileHover={{ scale: 1.05 }} 
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <FaGithub /> View Code
+                  </motion.a>
                 </div>
               </div>
             </motion.div>
