@@ -1,4 +1,3 @@
-// This file has the View More button - replace your existing ProjectCarousel.jsx with this
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
@@ -11,7 +10,17 @@ const ProjectCarousel = ({ projects, category }) => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const carouselRef = useRef(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (!isAutoPlaying || projects.length <= 1) return;
@@ -67,6 +76,35 @@ const ProjectCarousel = ({ projects, category }) => {
     return <div className="no-projects">No projects in this category</div>;
   }
 
+  // Mobile-specific animation values
+  const getMobileAnimation = (position) => {
+    const isActive = position === 0;
+    return {
+      x: position * (isMobile ? 200 : 320), // Smaller offset on mobile
+      y: Math.abs(position) * (isMobile ? 15 : 20),
+      scale: Math.max(0.6, 1 - Math.abs(position) * 0.12),
+      opacity: Math.abs(position) > 2 ? 0 : Math.max(0.3, 1 - Math.abs(position) * 0.25),
+      rotateY: position * (isMobile ? -8 : -12), // Less rotation on mobile
+      rotateX: Math.abs(position) * (isMobile ? 2 : 3),
+      filter: `blur(${Math.abs(position) * (isMobile ? 1 : 2)}px)`,
+      zIndex: 100 - Math.abs(position) * 10
+    };
+  };
+
+  // Desktop-specific animation values
+  const getDesktopAnimation = (position) => {
+    return {
+      x: position * 320,
+      y: Math.abs(position) * 20,
+      scale: Math.max(0.6, 1 - Math.abs(position) * 0.12),
+      opacity: Math.abs(position) > 2 ? 0 : Math.max(0.3, 1 - Math.abs(position) * 0.25),
+      rotateY: position * -12,
+      rotateX: Math.abs(position) * 3,
+      filter: `blur(${Math.abs(position) * 2}px)`,
+      zIndex: 100 - Math.abs(position) * 10
+    };
+  };
+
   return (
     <div className="carousel-wrapper" ref={carouselRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className="carousel-header">
@@ -85,31 +123,28 @@ const ProjectCarousel = ({ projects, category }) => {
           {projects.map((project, index) => {
             const position = getPosition(index);
             const isActive = index === currentIndex;
-            const opacity = Math.abs(position) > 2 ? 0 : Math.max(0.3, 1 - Math.abs(position) * 0.25);
-            const scale = Math.max(0.6, 1 - Math.abs(position) * 0.12);
-            const zIndex = 100 - Math.abs(position) * 10;
-            const translateX = position * 320;
-            const translateY = Math.abs(position) * 20;
-            const rotateY = position * -12;
-            const rotateX = Math.abs(position) * 3;
-            const blur = Math.abs(position) * 2;
+            
+            // Use different animations for mobile vs desktop
+            const animation = isMobile ? getMobileAnimation(position) : getDesktopAnimation(position);
             
             return (
               <motion.div
                 key={project.title}
                 className={`carousel-item ${isActive ? 'active' : ''}`}
                 initial={false}
-                animate={{
-                  x: translateX, y: translateY, scale, opacity, rotateY, rotateX,
-                  filter: `blur(${blur}px)`, zIndex
-                }}
+                animate={animation}
                 transition={{ type: "spring", stiffness: 300, damping: 35, mass: 1 }}
                 style={{
-                  position: 'absolute', left: '50%', top: '50%',
-                  transformOrigin: 'center center', cursor: 'pointer', width: '350px'
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  width: isMobile ? '280px' : '350px',
+                  marginLeft: isMobile ? '-140px' : '-175px',
+                  marginTop: isMobile ? '-190px' : '-225px',
+                  transformOrigin: 'center center',
+                  cursor: 'pointer',
                 }}
                 onClick={() => goToSlide(index)}
-                whileHover={{ scale: isActive ? 1.05 : scale * 1.02 }}
               >
                 <div className="carousel-card" onClick={(e) => { if (isActive) { e.stopPropagation(); openProjectModal(project); }}}>
                   <div className="carousel-preview" style={{ background: project.bgGradient }}>
