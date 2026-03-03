@@ -12,6 +12,7 @@ const ProjectCarousel = ({ projects, category }) => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const carouselRef = useRef(null);
+  const modalContentRef = useRef(null);
 
   // Add this effect to lock body scroll when modal is open
   useEffect(() => {
@@ -65,6 +66,24 @@ const ProjectCarousel = ({ projects, category }) => {
       document.body.style.touchAction = '';
       document.body.classList.remove('modal-open');
     };
+  }, [isModalOpen]);
+
+  // Add touch event handler for modal content
+  useEffect(() => {
+    if (isModalOpen && modalContentRef.current) {
+      const handleTouchMove = (e) => {
+        // Allow scrolling within modal content only
+        e.stopPropagation();
+      };
+      
+      modalContentRef.current.addEventListener('touchmove', handleTouchMove, { passive: false });
+      
+      return () => {
+        if (modalContentRef.current) {
+          modalContentRef.current.removeEventListener('touchmove', handleTouchMove);
+        }
+      };
+    }
   }, [isModalOpen]);
 
   useEffect(() => {
@@ -258,6 +277,7 @@ const ProjectCarousel = ({ projects, category }) => {
             }}
           >
             <motion.div 
+              ref={modalContentRef}
               className="project-modal-content" 
               initial={{ scale: 0.8, opacity: 0, y: 50 }} 
               animate={{ scale: 1, opacity: 1, y: 0 }} 
@@ -267,6 +287,9 @@ const ProjectCarousel = ({ projects, category }) => {
               style={{
                 position: 'relative',
                 zIndex: 1000000,
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
               }}
             >
               <button className="modal-close-btn" onClick={closeProjectModal}>×</button>
