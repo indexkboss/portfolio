@@ -2,7 +2,7 @@
 
 A modern, responsive portfolio website built with React and Vite, showcasing my work as an AI & Big Data Engineering student.
 
-![Portfolio Preview](public/preview.png) 
+![Portfolio Preview](public/preview.jpg) 
 
 ## 🚀 Live Demo
 
