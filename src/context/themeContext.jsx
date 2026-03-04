@@ -1,4 +1,3 @@
-// context/themeContext.js
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const themeContext = createContext();
@@ -12,13 +11,11 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  // Check localStorage first for saved preference, default to true (dark mode)
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme !== null ? savedTheme === 'dark' : true;
   });
 
-  // Apply theme to body and save to localStorage
   useEffect(() => {
     document.body.classList.toggle('light-mode', !isDarkMode);
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');

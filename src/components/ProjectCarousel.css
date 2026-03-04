@@ -1,5 +1,3 @@
-/* ProjectCarousel.css - UPDATED VERSION WITH PROPER MOBILE CENTERING */
-
 .carousel-wrapper {
   width: 100%;
   padding: 3rem 0;
@@ -38,7 +36,6 @@
   border-radius: 2px;
 }
 
-/* View More Button */
 .view-more-btn {
   padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, #0ea5e9, #06b6d4);
@@ -56,7 +53,6 @@
   box-shadow: 0 8px 25px rgba(14, 165, 233, 0.4);
 }
 
-/* CENTERED NAVIGATION BUTTONS */
 .carousel-controls {
   display: flex;
   justify-content: center;
@@ -282,7 +278,6 @@
   }
 }
 
-/* Dots Indicator */
 .carousel-dots {
   display: flex;
   justify-content: center;
@@ -311,7 +306,6 @@
   background: #0ea5e9;
 }
 
-/* Modal Styles */
 .project-modal-overlay {
   position: fixed;
   top: 0;
@@ -509,7 +503,6 @@
   font-size: 1.2rem;
 }
 
-/* ========== RESPONSIVE FIXES FOR MOBILE - PRESERVING THE SAME LOOK ========== */
 @media (max-width: 768px) {
   .carousel-header {
     flex-direction: column;
@@ -525,8 +518,8 @@
 
   .carousel-item {
     width: 300px;
-    margin-left: -150px; /* Adjust for new width */
-    margin-top: -200px; /* Adjust for new height */
+    margin-left: -150px; 
+    margin-top: -200px; 
   }
 
   .carousel-preview {
@@ -579,8 +572,8 @@
 
   .carousel-item {
     width: 260px;
-    margin-left: -130px; /* Adjust for new width */
-    margin-top: -175px; /* Adjust for new height */
+    margin-left: -130px; 
+    margin-top: -175px; 
   }
 
   .carousel-preview {
@@ -632,7 +625,6 @@
   }
 }
 
-/* Fix for very small devices */
 @media (max-width: 360px) {
   .carousel-3d-container {
     height: 380px;
@@ -641,8 +633,8 @@
 
   .carousel-item {
     width: 240px;
-    margin-left: -120px; /* Adjust for new width */
-    margin-top: -165px; /* Adjust for new height */
+    margin-left: -120px;
+    margin-top: -165px;
   }
 
   .carousel-preview {
@@ -667,38 +659,34 @@ div.carousel-wrapper {
   padding: 3rem;
 }
 
-/* Ensure all carousel items are centered properly */
+
 .carousel-item.active {
   z-index: 100;
 }
-/* Add at the end of ProjectCarousel.css */
 
-/* Fix for modal close button on small screens */
 @media (max-width: 768px) {
   .project-modal-content {
-    padding-top: 60px !important; /* Height of your navbar */
+    padding-top: 60px !important;
     max-height: 90vh;
     overflow-y: auto;
   }
   
-  /* Ensure the close button stays at the top and is always clickable */
+
   .modal-close-btn {
     position: fixed;
-    top: 70px; /* Position below navbar */
+    top: 70px; 
     right: 20px;
-    z-index: 1000001; /* Above everything */
+    z-index: 1000001;
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
   
-  /* Dark mode support */
   body.light-mode .modal-close-btn {
     background: rgba(0, 0, 0, 0.8);
     color: white;
   }
 }
 
-/* Even smaller screens */
 @media (max-width: 480px) {
   .project-modal-content {
     padding-top: 70px !important;

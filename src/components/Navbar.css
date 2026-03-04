@@ -106,7 +106,7 @@ body.light-mode .navbar .nav-links a:hover {
 .dropbtn {
   background: none;
   border: none;
-  color: var(--text-main); /*thiss!!!!*/
+  color: var(--text-main); 
   cursor: pointer;
   font-family: 'Courier New', Courier, monospace;
   font-weight: 800 !important; 
@@ -118,14 +118,13 @@ body.light-mode .navbar .nav-links a:hover {
 
 body.light-mode .dropbtn {
   background: none;
-  color: var(--text-main) !important; /*thiss!!!!*/
+  color: var(--text-main) !important; 
 }
 
 body.light-mode .dropbtn:hover {
   background: none;
-  color: var(--text-main) !important; /*thiss!!!!*/
+  color: var(--text-main) !important;
 }
-
 
 
 .dropdown:hover .dropbtn {
@@ -134,7 +133,7 @@ body.light-mode .dropbtn:hover {
 }
 
 body.light-mode .dropdown:hover .dropbtn {
-  color: var(--text-main) !important; /*thiss!!!!*/
+  color: var(--text-main) !important; 
   font-weight: 900 !important; 
 }
 
@@ -234,11 +233,6 @@ body.light-mode .dropdown:hover .dropbtn {
   }
 }
 
-
-
-/* Add this to your Navbar.css file */
-
-/* Light mode styles for the logo */
 body.light-mode .navbar .logo {
   background: transparent !important;
   -webkit-background-clip: unset !important;
@@ -261,7 +255,6 @@ text-decoration: 'none'
 text-decoration: 'none' 
 }
 
-/* Add to Navbar.css */
 @media (max-width: 768px) {
   .dropdown-content {
     position: fixed;
@@ -283,8 +276,6 @@ text-decoration: 'none'
     margin: 0 0.2rem;
   }
 }
-
-
 
 .navbar {
   position: fixed;
@@ -314,7 +305,6 @@ text-decoration: 'none'
   font-family: 'Courier New', Courier, monospace;
 }
 
-/* Desktop Navigation */
 .nav-links {
   display: flex;
   align-items: center;
@@ -352,7 +342,6 @@ text-decoration: 'none'
   width: 100%;
 }
 
-/* Theme Toggle */
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -375,7 +364,6 @@ text-decoration: 'none'
   border-color: transparent;
 }
 
-/* Dropdown */
 .dropdown {
   position: relative;
 }
@@ -446,7 +434,6 @@ text-decoration: 'none'
   to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
-/* Mobile Menu Button - Hidden on Desktop */
 .mobile-menu-btn {
   display: none;
   background: none;
@@ -457,7 +444,6 @@ text-decoration: 'none'
   z-index: 1001;
 }
 
-/* Mobile Menu */
 .mobile-menu {
   display: none;
   position: fixed;
@@ -533,7 +519,6 @@ text-decoration: 'none'
   margin-top: 8px;
 }
 
-/* Light Mode */
 body.light-mode .navbar {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(15px);
@@ -568,7 +553,6 @@ body.light-mode .mobile-theme-toggle {
   border: 1px solid #e2e8f0;
 }
 
-/* Responsive Breakpoints */
 @media (min-width: 769px) {
   .mobile-menu-btn {
     display: none !important;
@@ -603,7 +587,6 @@ body.light-mode .mobile-theme-toggle {
   }
 }
 
-/* Logo light mode fix */
 body.light-mode .navbar-logo {
   background: transparent !important;
   -webkit-background-clip: unset !important;
@@ -616,11 +599,11 @@ body.light-mode .mobile-menu-content {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background-color:var(--bg-soft);/**/
+  background-color:var(--bg-soft);
   color: #e2e8f0;
 
   border-width: 0.1px;
-  border-style: solid;   /* ← missing */
+  border-style: solid;   
   border-color: #c0c1c3;
 
 }
@@ -631,14 +614,11 @@ body.light-mode .mobile-menu-content {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background-color:var(--bg-soft);/**/
+  background-color:var(--bg-soft);
   color: #e2e8f0;
 
   border-width: 0.1px;
-  border-style: solid;   /* ← missing */
+  border-style: solid;   
   border-color: #24272a;
 
 }
-
-
-

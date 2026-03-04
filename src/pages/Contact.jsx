@@ -14,7 +14,6 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-// Import Formspree hook
 import { useForm } from "@formspree/react";
 import "./Contact.css";
 import Navbar from "../components/Navbar";
@@ -22,7 +21,6 @@ import Navbar from "../components/Navbar";
 const Contact = () => {
   const navigate = useNavigate();
   
-  // Formspree setup
   console.log("Env variable:", import.meta.env.VITE_FORMSPREE_ID);
   const formspreeId = import.meta.env.VITE_FORMSPREE_ID;
   const [state, handleSubmit] = useForm(formspreeId || "mzdaqoer");
@@ -37,9 +35,7 @@ const Contact = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [configError, setConfigError] = useState(false);
 
-  /* ======================
-     CHECK CONFIGURATION
-  ====================== */
+
   useEffect(() => {
     if (!formspreeId) {
       console.error("Formspree ID is missing! Check your .env file.");
@@ -50,9 +46,7 @@ const Contact = () => {
     }
   }, []);
 
-  /* ======================
-     INPUT CHANGE
-  ====================== */
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -60,16 +54,12 @@ const Contact = () => {
     });
   };
 
-  /* ======================
-     FORM SUBMIT
-  ====================== */
   const onSubmit = async (e) => {
     e.preventDefault();
 
     setSubmitStatus(null);
     setErrorMessage("");
 
-    /* ---------- VALIDATION ---------- */
     if (!formData.name.trim()) {
       setErrorMessage("Please enter your name.");
       setSubmitStatus("error");
@@ -97,9 +87,6 @@ const Contact = () => {
     }
   };
 
-  /* ======================
-     HANDLE FORMSPREE STATE
-  ====================== */
   useEffect(() => {
     if (state.succeeded) {
       setSubmitStatus("success");
@@ -129,9 +116,6 @@ const Contact = () => {
     }
   }, [state.succeeded, state.errors]);
 
-  /* ======================
-     AUTO HIDE ALERT
-  ====================== */
   useEffect(() => {
     if (submitStatus) {
       const timer = setTimeout(() => {
@@ -142,9 +126,6 @@ const Contact = () => {
     }
   }, [submitStatus]);
 
-  /* ======================
-     SCROLL TO SECTION
-  ====================== */
   const scrollToSection = (sectionId) => {
     if (window.location.pathname !== '/') {
       navigate("/", { state: { sectionId } });
@@ -164,9 +145,6 @@ const Contact = () => {
     }
   };
 
-  /* ======================
-     CONTACT ICONS
-  ====================== */
   const contactIcons = [
     {
       icon: <Github size={22} />,
@@ -194,7 +172,6 @@ const Contact = () => {
     },
   ];
 
-  // Show error state if configuration is missing
   if (configError) {
     return (
       <div className="contact-page-new">
@@ -408,7 +385,6 @@ const Contact = () => {
   );
 };
 
-// Separate Footer Component for reusability
 const Footer = ({ scrollToSection }) => (
   <footer className="footer-main">
     <div className="footer-gradient-line" />

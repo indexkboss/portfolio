@@ -29,11 +29,10 @@ const Home = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [filteredProjects, setFilteredProjects] = useState([]);
   
-  // Add this state with your other useState declarations
   const [selectedCertificate, setSelectedCertificate] = useState(null);
   const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
   const navigate = useNavigate();
-  // Handle smooth scroll to section
+
   const scrollToSection = (sectionId) => {
     if (location.pathname !== '/') {
       navigate("/", { state: { sectionId } });
@@ -48,7 +47,6 @@ const Home = () => {
     }
   };
 
-  // Set filtered projects when component mounts or category changes
   useEffect(() => {
     if (activeCategory === 'all') {
       setFilteredProjects(allProjectsData);
@@ -57,7 +55,6 @@ const Home = () => {
     }
   }, [activeCategory]);
 
-  // Listen for category changes from sidebar
   useEffect(() => {
     const handleCategoryChange = (event) => {
       setActiveCategory(event.detail);
@@ -83,8 +80,6 @@ const Home = () => {
   }, [currentDemoIndex]);
 
 
-//canvas:
-// Replace your current useEffect with this one
 useEffect(() => {
   const canvas = document.getElementById("light-bg-canvas");
   if (!canvas) return;
@@ -113,7 +108,6 @@ useEffect(() => {
       this.speedX = (Math.random() - 0.5) * 0.8;
       this.speedY = (Math.random() - 0.5) * 0.8;
       this.opacity = Math.random() * 0.6 + 0.2;
-      // Alternate between your accent colors
     this.color = Math.random() > 0.5 ? 'rgb(147, 197, 253)' : '#db2778'; // Softer blue and lavender
     }
 
@@ -121,7 +115,6 @@ useEffect(() => {
       this.x += this.speedX;
       this.y += this.speedY;
 
-      // Bounce off edges
       if (this.x < 0 || this.x > canvas.width) {
         this.speedX *= -1;
         this.x = Math.max(0, Math.min(this.x, canvas.width));
@@ -131,7 +124,6 @@ useEffect(() => {
         this.y = Math.max(0, Math.min(this.y, canvas.height));
       }
 
-      // Slowly fade and reset to keep it fresh
       this.opacity -= 0.002;
       if (this.opacity <= 0.1) {
         this.reset();
@@ -146,7 +138,6 @@ useEffect(() => {
       ctx.globalAlpha = this.opacity;
       ctx.fill();
       
-      // Add a small glow
       ctx.shadowColor = this.color;
       ctx.shadowBlur = 10;
       ctx.fill();
@@ -154,7 +145,6 @@ useEffect(() => {
     }
   }
 
-  // Create 30 particles
   particles = Array.from({ length: 30 }, () => new Particle());
 
   const animate = () => {
@@ -165,7 +155,6 @@ useEffect(() => {
       return;
     }
 
-    // Draw all particles
     particles.forEach(particle => {
       particle.update();
       particle.draw();
@@ -191,32 +180,8 @@ useEffect(() => {
     setDirection(1);
     setCurrentDemoIndex((prev) => (prev + 1) % websiteDemosData.length);
   };
-//fixing the navigation through the overview elements :
 const location = useLocation();
-// useEffect(() => {
-//   if (!location.state?.sectionId) return;
 
-//   const sectionId = location.state.sectionId;
-
-//   const scrollToTarget = () => {
-//     const element = document.getElementById(sectionId);
-
-//     if (element) {
-//       element.scrollIntoView({
-//         behavior: "smooth",
-//         block: "start",
-//       });
-//     } else {
-//       requestAnimationFrame(scrollToTarget);
-//     }
-//   };
-
-//   scrollToTarget();
-// }, [location]);
-
-
-// fixing the navigation through the overview elements :
-// const location = useLocation();
 useEffect(() => {
   if (!location.state?.sectionId) return;
 
@@ -226,7 +191,7 @@ useEffect(() => {
     const element = document.getElementById(sectionId);
 
     if (element) {
-      const navbarHeight = 80; // Même valeur que dans Projects.jsx
+      const navbarHeight = 80; 
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - navbarHeight;
 
@@ -239,7 +204,7 @@ useEffect(() => {
     }
   };
 
-  // Petit délai pour s'assurer que la page est bien chargée
+  
   setTimeout(scrollToTarget, 100);
 }, [location]);
 

@@ -10,18 +10,15 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Add this effect to lock body scroll when mobile menu is open
   useEffect(() => {
     if (isMenuOpen) {
-      // Save current scroll position
       const scrollY = window.scrollY;
-      // Add styles to body to prevent scrolling
+  
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
       document.body.style.width = '100%';
-      document.body.style.overflowY = 'scroll'; // Maintain scrollbar width to prevent layout shift
+      document.body.style.overflowY = 'scroll'; 
     } else {
-      // Restore scroll position when menu closes
       const scrollY = document.body.style.top;
       document.body.style.position = '';
       document.body.style.top = '';
@@ -34,21 +31,17 @@ const Navbar = () => {
   }, [isMenuOpen]);
 
   const scrollToSection = (sectionId) => {
-    // Close mobile menu first
     setIsMenuOpen(false);
     
     if (location.pathname !== '/') {
-      // If not on home page, navigate to home with state
       navigate("/", { state: { sectionId } });
       return;
     }
     
-    // If on home page, scroll to section
     const element = document.getElementById(sectionId);
     if (element) {
-      // Add a small delay to ensure the menu is closed
       setTimeout(() => {
-        const navbarHeight = 80; // Height of your fixed navbar
+        const navbarHeight = 80; 
         const elementPosition = element.getBoundingClientRect().top + window.scrollY;
         const offsetPosition = elementPosition - navbarHeight;
 
@@ -62,7 +55,6 @@ const Navbar = () => {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  // Handle escape key to close menu
   useEffect(() => {
     const handleEscKey = (event) => {
       if (event.key === 'Escape' && isMenuOpen) {

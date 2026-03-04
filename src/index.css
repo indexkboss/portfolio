@@ -1,7 +1,6 @@
-/* index.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-@import './styles/theme.css'; /* Import theme styles */
-/* Global Modal Styles - Ensure modals are always on top */
+@import './styles/theme.css'; 
+
 .project-modal-overlay,
 .cert-modal-overlay,
 .modal-overlay,
@@ -15,13 +14,10 @@
 .demo-modal-content {
   z-index: 1000000 !important;
 }
-
-/* Ensure navbar doesn't overlap modals */
 .navbar {
-  z-index: 1000 !important; /* Keep navbar lower than modals */
+  z-index: 1000 !important; 
 }
 
-/* Prevent any interactions with background when modal is open */
 body.modal-open {
   overflow: hidden !important;
   position: fixed !important;
@@ -63,18 +59,15 @@ body.light-mode {
   background-attachment: fixed;
 }
 
-/* Force all sections to use transparent background */
 .home, .hero, .carousel-section, .sections-wrapper, 
 .section, .projects-page, .contact-page-new, .footer-main {
   background: transparent !important;
 }
 
-/* Remove conflicting overlays */
 .home::before {
   display: none !important;
 }
 
-/* Canvas settings */
 #light-bg-canvas {
   position: fixed !important;
   top: 0;
@@ -84,7 +77,6 @@ body.light-mode {
   z-index: -1;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -121,9 +113,7 @@ body.light-mode ::-webkit-scrollbar-track {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-/* Add at the end of your index.css */
 
-/* Ensure modal is always on top */
 .project-modal-overlay,
 .cert-modal-overlay,
 .modal-overlay {
@@ -136,7 +126,6 @@ body.light-mode ::-webkit-scrollbar-track {
   z-index: 10000 !important;
 }
 
-/* Prevent any interactions with background when modal is open */
 body.modal-open {
   overflow: hidden;
   position: fixed;

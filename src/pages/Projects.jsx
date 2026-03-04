@@ -13,7 +13,7 @@ const Projects = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const navigate = useNavigate();
 
-
+/*use the data file instead of this var */
   const allProjects = [
     { 
       title: "Driving In The Rain", 

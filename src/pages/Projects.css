@@ -1,9 +1,3 @@
-/* .projects-page {
-  min-height: 100vh;
-  padding-bottom: 4rem;
-  color: var(--text-main);
-} */
-
 .projects-page {
   min-height: 100vh;
   padding-top: 80px;   
@@ -37,7 +31,6 @@
   color: #ff006e;
 }
 
-/* Header */
 .projects-header {
   text-align: center;
   padding: 4rem 2rem 2rem;
@@ -114,19 +107,6 @@
   margin: 0 auto;
 }
 
-/* .project-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-.project-card {
-  max-width: 400px;
-  width: 100%;
-} */
 
 .project-card {
   background: rgba(255, 255, 255, 0.03);
@@ -225,11 +205,6 @@
     font-size: 0.9rem;
   }
 
-  /* .projects-grid {
-    grid-template-columns: 1fr;
-    padding: 1rem;
-    gap: 1.5rem;
-  } */
   .projects-grid {
     grid-template-columns: 1fr;
     justify-content: center;  
@@ -245,7 +220,6 @@
   }
 }
 
-/* Navbar styles from home */
 .navbar {
   position: fixed;
   top: 0;
@@ -327,8 +301,6 @@
   border-color: transparent;
 }
 
-
-/* Dropdown styles */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -407,9 +379,6 @@
 }
 
 
-/* ===============================
-   FOOTER
-================================ */
 
 .projects-footer-new {
   padding: 1.5rem 5vw;
@@ -428,7 +397,6 @@ body {
   transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Dark mode background */
 body:not(.light-mode) {
   background: radial-gradient(circle at 30% 30%, #1a1f2e, #0b0d10 80%);
 }
@@ -702,8 +670,3 @@ body.light-mode .footer-nav-link:hover {
 .footer-bottom{
   padding-bottom: 80px;
 }
-
-
-
-
-

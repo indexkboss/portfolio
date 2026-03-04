@@ -6,7 +6,6 @@ import './CertificateModal.css';
 const CertificateModal = ({ isOpen, onClose, certificate, allCertificates = [] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Find the index of the current certificate in allCertificates array
   useEffect(() => {
     if (certificate && allCertificates.length > 0) {
       const index = allCertificates.findIndex(
@@ -20,7 +19,6 @@ const CertificateModal = ({ isOpen, onClose, certificate, allCertificates = [] }
 
   if (!certificate) return null;
 
-  // Map certificate titles to their image paths - using the exact titles from your data
   const getCertificateImage = (title) => {
     const imageMap = {
       'Introduction à la programmation orientée objet (en C++)': '/CourseraC++.png',
@@ -53,7 +51,6 @@ const CertificateModal = ({ isOpen, onClose, certificate, allCertificates = [] }
     }
   };
 
-  // Get the current certificate from allCertificates array based on index
   const currentCertificate = allCertificates[currentIndex] || certificate;
 
   return (
@@ -112,7 +109,6 @@ const CertificateModal = ({ isOpen, onClose, certificate, allCertificates = [] }
                   href={currentCertificate.verifyUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  // className="cert-verify-link"
                   className="cert-download-btn"
                   style={{marginRight:'55px', textDecoration:'none'}}
                 >
@@ -127,7 +123,6 @@ const CertificateModal = ({ isOpen, onClose, certificate, allCertificates = [] }
                 </button>
               </div>
 
-              {/* Navigation arrows if multiple certificates */}
               {allCertificates.length > 1 && (
                 <div className="cert-navigation">
                   <button onClick={handlePrevious} className="cert-nav-btn">

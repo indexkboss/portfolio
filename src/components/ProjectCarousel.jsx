@@ -14,13 +14,10 @@ const ProjectCarousel = ({ projects, category }) => {
   const carouselRef = useRef(null);
   const modalContentRef = useRef(null);
 
-  // Add this effect to lock body scroll when modal is open
   useEffect(() => {
     if (isModalOpen) {
-      // Save current scroll position
       const scrollY = window.scrollY;
       
-      // Add styles to body to prevent scrolling
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
       document.body.style.left = '0';
@@ -29,13 +26,10 @@ const ProjectCarousel = ({ projects, category }) => {
       document.body.style.overflow = 'hidden';
       document.body.style.height = '100vh';
       
-      // Add modal-open class
       document.body.classList.add('modal-open');
       
-      // Prevent touch events on background
       document.body.style.touchAction = 'none';
     } else {
-      // Restore scroll position when modal closes
       const scrollY = document.body.style.top;
       document.body.style.position = '';
       document.body.style.top = '';
@@ -46,7 +40,6 @@ const ProjectCarousel = ({ projects, category }) => {
       document.body.style.height = '';
       document.body.style.touchAction = '';
       
-      // Remove modal-open class
       document.body.classList.remove('modal-open');
       
       if (scrollY) {
@@ -68,11 +61,9 @@ const ProjectCarousel = ({ projects, category }) => {
     };
   }, [isModalOpen]);
 
-  // Add touch event handler for modal content
   useEffect(() => {
     if (isModalOpen && modalContentRef.current) {
       const handleTouchMove = (e) => {
-        // Allow scrolling within modal content only
         e.stopPropagation();
       };
       
@@ -145,7 +136,6 @@ const ProjectCarousel = ({ projects, category }) => {
     return normalizedDiff;
   };
 
-  // Mobile-specific animation values
   const getMobileAnimation = (position) => {
     return {
       x: position * (isMobile ? 200 : 320),
@@ -159,7 +149,6 @@ const ProjectCarousel = ({ projects, category }) => {
     };
   };
 
-  // Desktop-specific animation values
   const getDesktopAnimation = (position) => {
     return {
       x: position * 320,
@@ -289,7 +278,7 @@ const ProjectCarousel = ({ projects, category }) => {
                 zIndex: 1000000,
                 maxHeight: '90vh',
                 overflowY: 'auto',
-                WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
+                WebkitOverflowScrolling: 'touch', 
               }}
             >
               <button className="modal-close-btn" onClick={closeProjectModal}>×</button>
