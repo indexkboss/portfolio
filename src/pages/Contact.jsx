@@ -23,7 +23,7 @@ const Contact = () => {
   
   console.log("Env variable:", import.meta.env.VITE_FORMSPREE_ID);
   const formspreeId = import.meta.env.VITE_FORMSPREE_ID;
-  const [state, handleSubmit] = useForm(formspreeId || "mzdaqoer");
+  const [state, handleSubmit] = useForm(formspreeId);
   
   const [formData, setFormData] = useState({
     name: "",
