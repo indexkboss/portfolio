@@ -1,5 +1,10 @@
+
 {
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://bossony-khadija-portfolio.netlify.app/",
+      "permanent": true
+    }
   ]
 }
